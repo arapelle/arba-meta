@@ -38,7 +38,8 @@ configure_headers(configured_headers
 
 ## Headers:
 set(headers
-    include/arba/meta/meta.hpp
+    include/arba/meta/policy/exception_policy.hpp
+    include/arba/meta/policy/thread_policy.hpp
 )
 
 ## Add C++ library:
