@@ -38,12 +38,13 @@ configure_headers(configured_headers
 
 ## Headers:
 set(headers
-    include/arba/meta/type_traits/associated_type.hpp
+    include/arba/meta/type_traits/value_or_default.hpp
+    include/arba/meta/type_traits/is_moveable_to_itself.hpp
     include/arba/meta/type_traits/default.hpp
     include/arba/meta/type_traits/remove_right_reference.hpp
-    include/arba/meta/type_traits/value_or_default.hpp
-    include/arba/meta/type_traits/value_or_generate.hpp
+    include/arba/meta/type_traits/associated_type.hpp
     include/arba/meta/type_traits/type_or_default.hpp
+    include/arba/meta/type_traits/value_or_generate.hpp
     include/arba/meta/policy/exception_policy.hpp
     include/arba/meta/policy/thread_policy.hpp
 )
