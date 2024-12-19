@@ -38,6 +38,7 @@ configure_headers(configured_headers
 
 ## Headers:
 set(headers
+    include/arba/meta/type_traits/associated_type.hpp
     include/arba/meta/type_traits/default.hpp
     include/arba/meta/type_traits/remove_right_reference.hpp
     include/arba/meta/type_traits/value_or_default.hpp
