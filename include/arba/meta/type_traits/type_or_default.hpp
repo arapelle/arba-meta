@@ -31,5 +31,5 @@ struct type_or_default<InputType, OrType>
 template <class InputType, class OrType>
 using type_or_default_t = typename type_or_default<InputType, OrType>::type;
 
-}
-}
+} // namespace meta
+} // namespace arba

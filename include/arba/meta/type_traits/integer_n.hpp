@@ -140,5 +140,5 @@ using atomic_int_least_n_t = typename integer_least_n<BitSize, signed, thread_sa
 template <unsigned BitSize>
 using atomic_uint_least_n_t = typename integer_least_n<BitSize, unsigned, thread_safe_t>::type;
 
-}
-}
+} // namespace meta
+} // namespace arba

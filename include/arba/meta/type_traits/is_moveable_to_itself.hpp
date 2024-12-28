@@ -25,5 +25,5 @@ inline constexpr bool is_move_assignable_to_itself_v<std::atomic<Type>> = true;
 template <class Type>
 inline constexpr bool is_move_assignable_to_itself_v<std::atomic<std::shared_ptr<Type>>> = true;
 
-}
-}
+} // namespace meta
+} // namespace arba

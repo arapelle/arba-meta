@@ -26,5 +26,5 @@ struct remove_right_reference<Type&&>
 template <typename Type>
 using remove_right_reference_t = typename remove_right_reference<Type>::type;
 
-}
-}
+} // namespace meta
+} // namespace arba

@@ -17,5 +17,5 @@ constexpr maythrow_t maythrow;
 template <class PolicyType>
 concept ExceptionPolicy = std::is_same_v<PolicyType, std::nothrow_t> || std::is_same_v<PolicyType, maythrow_t>;
 
-}
-}
+} // namespace meta
+} // namespace arba

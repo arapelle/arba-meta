@@ -30,8 +30,8 @@ struct associated_type_or_default<TagType, ObservedType, OrType>
 
 template <class TagType, class ObservedType, class OrType>
 using associated_type_or_default_t = typename associated_type_or_default<TagType, ObservedType, OrType>::type;
-}
-}
+} // namespace meta
+} // namespace arba
 
 // macro define helper
 

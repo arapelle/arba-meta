@@ -26,5 +26,5 @@ value_or_generate(InputType&& input_value, Callable&& gen_default)
     }
 }
 
-}
-}
+} // namespace meta
+} // namespace arba

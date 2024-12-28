@@ -26,5 +26,5 @@ remove_right_reference_t<type_or_default_t<InputType, OrType>> value_or_default(
     }
 }
 
-}
-}
+} // namespace meta
+} // namespace arba

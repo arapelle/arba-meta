@@ -11,5 +11,5 @@ struct default_t
 };
 constexpr default_t default_v;
 
-}
-}
+} // namespace meta
+} // namespace arba
