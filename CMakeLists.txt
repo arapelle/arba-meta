@@ -44,7 +44,7 @@ set(headers
     ./include/arba/meta/type_traits/default.hpp
     ./include/arba/meta/type_traits/integer_n.hpp
     ./include/arba/meta/type_traits/is_moveable_to_itself.hpp
-    ./include/arba/meta/type_traits/remove_right_reference.hpp
+    include/arba/meta/type_traits/make_mutex_type.hpp
     ./include/arba/meta/type_traits/type_or_default.hpp
     ./include/arba/meta/type_traits/value_or_default.hpp
     ./include/arba/meta/type_traits/value_or_generate.hpp
