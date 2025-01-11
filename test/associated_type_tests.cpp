@@ -1,4 +1,5 @@
 #include <arba/meta/type_traits/associated_type.hpp>
+
 #include <gtest/gtest.h>
 
 class serializable_tag

@@ -1,6 +1,8 @@
 ﻿#include <arba/meta/type_traits/remove_right_reference.hpp>
-#include <format>
+
 #include <gtest/gtest.h>
+
+#include <format>
 #include <string>
 
 TEST(remove_right_reference_tests, remove_right_reference_t__ok)

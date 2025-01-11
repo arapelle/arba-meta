@@ -1,6 +1,8 @@
 ﻿#include <arba/meta/type_traits/type_or_default.hpp>
-#include <format>
+
 #include <gtest/gtest.h>
+
+#include <format>
 #include <string>
 
 template <class NumberType, class OptionType>

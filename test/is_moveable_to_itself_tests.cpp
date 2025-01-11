@@ -1,4 +1,5 @@
 #include <arba/meta/type_traits/is_moveable_to_itself.hpp>
+
 #include <gtest/gtest.h>
 
 struct abstract_scope_bound_data

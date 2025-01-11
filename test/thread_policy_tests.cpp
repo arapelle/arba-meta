@@ -1,4 +1,5 @@
 #include <arba/meta/policy/thread_policy.hpp>
+
 #include <gtest/gtest.h>
 
 int func(meta::ThreadPolicy auto)

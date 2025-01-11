@@ -1,4 +1,5 @@
 #include <arba/meta/policy/exception_policy.hpp>
+
 #include <gtest/gtest.h>
 
 int func(meta::ExceptionPolicy auto)
