@@ -33,6 +33,6 @@ int main()
     std::cout << tfunc(meta::default_v, meta::default_v) << " ; " << option << std::endl;
     std::cout << tfunc(meta::default_v, option) << " ; " << option << std::endl;
     std::cout << tfunc(42, option) << " ; " << option << std::endl;
-    std::cout << "EXIT SUCCESS" << std::endl;
+    std::cout << "TEST PACKAGE SUCCESS" << std::endl;
     return EXIT_SUCCESS;
 }
