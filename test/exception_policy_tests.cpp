@@ -16,4 +16,9 @@ TEST(exception_policy_tests, test_exception_policy)
 {
     ASSERT_EQ(func(meta::maythrow), 642);
     ASSERT_EQ(func(std::nothrow), 0);
+#ifdef NDEBUG
+    ASSERT_EQ(func(meta::smartthrow), 0);
+#else
+    ASSERT_EQ(func(meta::smartthrow), 642);
+#endif
 }
