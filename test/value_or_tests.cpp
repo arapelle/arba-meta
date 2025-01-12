@@ -1,8 +1,9 @@
 ﻿#include "default_arg.hpp"
-
 #include <arba/meta/type_traits/value_or_default.hpp>
-#include <format>
+
 #include <gtest/gtest.h>
+
+#include <format>
 #include <string>
 
 template <class ValueType, class OptionType>

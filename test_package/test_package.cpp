@@ -1,6 +1,7 @@
 #include <arba/meta/type_traits/value_or_default.hpp>
 #include <arba/meta/type_traits/value_or_generate.hpp>
 #include <arba/meta/version.hpp>
+
 #include <cstdlib>
 #include <iostream>
 
@@ -32,6 +33,6 @@ int main()
     std::cout << tfunc(meta::default_v, meta::default_v) << " ; " << option << std::endl;
     std::cout << tfunc(meta::default_v, option) << " ; " << option << std::endl;
     std::cout << tfunc(42, option) << " ; " << option << std::endl;
-    std::cout << "EXIT SUCCESS" << std::endl;
+    std::cout << "TEST PACKAGE SUCCESS" << std::endl;
     return EXIT_SUCCESS;
 }

@@ -1,6 +1,8 @@
 ﻿#include <arba/meta/type_traits/integer_n.hpp>
-#include <format>
+
 #include <gtest/gtest.h>
+
+#include <format>
 #include <string>
 
 TEST(integer_n_tests, integer_n__ok)

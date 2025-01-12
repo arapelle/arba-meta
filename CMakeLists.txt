@@ -19,7 +19,7 @@ set_build_type_ifndef()
 
 set_project_name(NAMESPACE "arba" BASE_NAME "meta")
 string(TIMESTAMP configure_datetime "%Y%m%d-%H%M%S")
-set_project_semantic_version("0.1.0" BUILD_METADATA "${configure_datetime}")
+set_project_semantic_version("0.2.0" BUILD_METADATA "${configure_datetime}")
 
 project(${PROJECT_NAME}
         VERSION ${PROJECT_VERSION}
@@ -38,16 +38,18 @@ configure_headers(configured_headers
 
 ## Headers:
 set(headers
-    ./include/arba/meta/policy/exception_policy.hpp
-    ./include/arba/meta/policy/thread_policy.hpp
-    ./include/arba/meta/type_traits/associated_type.hpp
-    ./include/arba/meta/type_traits/default.hpp
-    ./include/arba/meta/type_traits/integer_n.hpp
-    ./include/arba/meta/type_traits/is_moveable_to_itself.hpp
-    ./include/arba/meta/type_traits/remove_right_reference.hpp
-    ./include/arba/meta/type_traits/type_or_default.hpp
-    ./include/arba/meta/type_traits/value_or_default.hpp
-    ./include/arba/meta/type_traits/value_or_generate.hpp
+    include/arba/meta/policy/exception_policy.hpp
+    include/arba/meta/policy/thread_policy.hpp
+    include/arba/meta/type_traits/associated_type.hpp
+    include/arba/meta/type_traits/default.hpp
+    include/arba/meta/type_traits/integer_n.hpp
+    include/arba/meta/type_traits/is_moveable_to_itself.hpp
+    include/arba/meta/type_traits/make_mutex_type.hpp
+    include/arba/meta/type_traits/remove_right_reference.hpp
+    include/arba/meta/type_traits/sequence.hpp
+    include/arba/meta/type_traits/type_or_default.hpp
+    include/arba/meta/type_traits/value_or_default.hpp
+    include/arba/meta/type_traits/value_or_generate.hpp
 )
 
 ## Add C++ library:
