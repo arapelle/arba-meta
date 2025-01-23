@@ -14,6 +14,12 @@ TEST(sequence_tests, last__int_seq__ok)
     SUCCEED();
 }
 
+TEST(sequence_tests, type_sequence_tuple__ok)
+{
+    static_assert(std::is_same_v<meta::type_sequence<int, float>::tuple, std::tuple<int, float>>);
+    SUCCEED();
+}
+
 TEST(sequence_tests, type_sequence_size__ok)
 {
     static_assert(meta::type_sequence<int, float, std::string>::size() == 3);
