@@ -29,6 +29,8 @@ consteval T last(std::integer_sequence<T, FirstInt, SecondInt, Ints...>)
 template <typename... Args>
 struct type_sequence
 {
+    using tuple = std::tuple<Args...>;
+
     static constexpr size_t size() noexcept { return sizeof...(Args); }
 };
 
