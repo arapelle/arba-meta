@@ -1,5 +1,6 @@
 #pragma once
 
+#include <arba/meta/concepts/signedness.hpp>
 #include <arba/meta/policy/thread_policy.hpp>
 
 #include <atomic>
@@ -14,9 +15,6 @@ namespace meta
 {
 
 // integer_n
-
-template <typename SignType>
-concept Signedness = std::is_same_v<SignType, signed> || std::is_same_v<SignType, unsigned>;
 
 template <unsigned BitSize, Signedness = signed, ThreadPolicy = thread_unsafe_t>
     requires((BitSize % 8) == 0 && BitSize > 0 && BitSize <= (sizeof(std::uintmax_t) * 8))

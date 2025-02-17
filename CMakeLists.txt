@@ -38,6 +38,7 @@ configure_headers(configured_headers
 
 ## Headers:
 set(headers
+    include/arba/meta/concepts/signedness.hpp
     include/arba/meta/policy/exception_policy.hpp
     include/arba/meta/policy/thread_policy.hpp
     include/arba/meta/type_traits/associated_type.hpp
