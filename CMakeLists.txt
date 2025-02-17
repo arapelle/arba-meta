@@ -38,7 +38,17 @@ configure_headers(configured_headers
 
 ## Headers:
 set(headers
-    include/arba/meta/concepts/signedness.hpp
+    include/arba/meta/concept/addable.hpp
+    include/arba/meta/concept/arithmetic.hpp
+    include/arba/meta/concept/bitwise_logical.hpp
+    include/arba/meta/concept/bitwise_shiftable.hpp
+    include/arba/meta/concept/decrementable.hpp
+    include/arba/meta/concept/floating_point.hpp
+    include/arba/meta/concept/incrementable.hpp
+    include/arba/meta/concept/integral.hpp
+    include/arba/meta/concept/multipliable.hpp
+    include/arba/meta/concept/signedness.hpp
+    include/arba/meta/concept/totally_arithmetic.hpp
     include/arba/meta/policy/exception_policy.hpp
     include/arba/meta/policy/thread_policy.hpp
     include/arba/meta/type_traits/associated_type.hpp
