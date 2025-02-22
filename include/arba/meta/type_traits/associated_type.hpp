@@ -1,5 +1,7 @@
 #pragma once
 
+#include <arba/cppx/preprocessor/identity_type.hpp>
+
 inline namespace arba
 {
 namespace meta
@@ -37,10 +39,10 @@ using associated_type_or_default_t = typename associated_type_or_default<TagType
 
 #define ARBA_META_DEFINE_ASSOCIATED_TYPE(TagType, ObservedType, AssociatedType)                                        \
     template <>                                                                                                        \
-    struct arba::meta::associated_type<TagType, ObservedType>                                                          \
+    struct arba::meta::associated_type<TagType, ARBA_CPPX_PP_IDENTITY_TYPE(ObservedType)>                              \
     {                                                                                                                  \
-        using type = AssociatedType;                                                                                   \
-    };
+        using type = ARBA_CPPX_PP_IDENTITY_TYPE(AssociatedType);                                                       \
+    }
 
 #ifndef META_DEFINE_ASSOCIATED_TYPE
 #define META_DEFINE_ASSOCIATED_TYPE(TagType, ObservedType, AssociatedType_)                                            \

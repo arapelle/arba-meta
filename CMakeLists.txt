@@ -19,7 +19,7 @@ set_build_type_ifndef()
 
 set_project_name(NAMESPACE "arba" BASE_NAME "meta")
 string(TIMESTAMP configure_datetime "%Y%m%d-%H%M%S")
-set_project_semantic_version("0.2.0" BUILD_METADATA "${configure_datetime}")
+set_project_semantic_version("0.3.0" BUILD_METADATA "${configure_datetime}")
 
 project(${PROJECT_NAME}
         VERSION ${PROJECT_VERSION}
@@ -38,6 +38,17 @@ configure_headers(configured_headers
 
 ## Headers:
 set(headers
+    include/arba/meta/concept/addable.hpp
+    include/arba/meta/concept/arithmetic.hpp
+    include/arba/meta/concept/bitwise_logical.hpp
+    include/arba/meta/concept/bitwise_shiftable.hpp
+    include/arba/meta/concept/decrementable.hpp
+    include/arba/meta/concept/floating_point.hpp
+    include/arba/meta/concept/incrementable.hpp
+    include/arba/meta/concept/integral.hpp
+    include/arba/meta/concept/multipliable.hpp
+    include/arba/meta/concept/signedness.hpp
+    include/arba/meta/concept/totally_arithmetic.hpp
     include/arba/meta/policy/exception_policy.hpp
     include/arba/meta/policy/thread_policy.hpp
     include/arba/meta/type_traits/associated_type.hpp
@@ -62,10 +73,10 @@ add_cpp_library(${PROJECT_NAME} HEADER_ONLY
 add_library("${PROJECT_NAMESPACE}::${PROJECT_BASE_NAME}${LIBRARY_TYPE_POSTFIX}" ALIAS ${PROJECT_NAME})
 
 ## Link C++ targets:
-find_package(arba-vrsn 0.4 REQUIRED CONFIG)
+find_package(arba-cppx 0.1.0 REQUIRED CONFIG)
 target_link_libraries(${PROJECT_NAME}
     INTERFACE
-        arba::vrsn
+        arba::cppx
 )
 
 ## Add tests:
