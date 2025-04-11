@@ -11,3 +11,5 @@ add_cpp_library_basic_tests(${PROJECT_NAME} GTest::gtest_main
         make_mutex_type_tests.cpp
         sequence_tests.cpp
 )
+
+add_subdirectory(enum)
