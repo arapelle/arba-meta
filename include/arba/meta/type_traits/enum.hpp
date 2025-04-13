@@ -7,6 +7,7 @@
 #include <functional>
 #include <string_view>
 #include <type_traits>
+#include <version>
 
 inline namespace arba
 {
@@ -136,7 +137,10 @@ public:
     }
     consteval enumerator(const enumerator_core_type_& val) : base_(val) {}
 
-    /*constexpr*/ std::string_view name() const noexcept
+#if __cpp_constexpr >= 202211L
+    constexpr
+#endif
+    std::string_view name() const noexcept
         requires std::convertible_to<value_type, std::string_view> || requires {
             { enumeration::name(this->value()) } -> std::convertible_to<std::string_view>;
         }
@@ -231,7 +235,11 @@ protected:
         return private_::enumeration_base_::enumerator_maker<enumerator, self_>::make_(val, std::forward<ArgsTypes>(args)...);
     }
 
-    static /*constexpr*/ std::string_view name(value_type value) noexcept
+    static
+#if __cpp_constexpr >= 202211L
+        constexpr
+#endif
+        std::string_view name(value_type value) noexcept
         requires requires {
             { self_::all_names() };
             { self_::index(value) };
@@ -301,7 +309,11 @@ public:
             return static_cast<const decltype(self_::enumerators)&>(self_::enumerators);
     }
 
-    static /*constexpr*/ decltype(auto) all_names()
+    static
+#if __cpp_constexpr >= 202211L
+        constexpr
+#endif
+        decltype(auto) all_names()
         requires requires {
             { self_::enumerator_names[0ull] } -> std::convertible_to<std::string_view>;
         }
@@ -310,7 +322,13 @@ public:
                           { base_::all_names() };
                       })
         {
-            static const /*expr*/ std::array all_names_ = concat(base_::all_names(), self_::enumerator_names);
+            static
+#if __cpp_constexpr >= 202211L
+                constexpr
+#else
+                const
+#endif
+                std::array all_names_ = concat(base_::all_names(), self_::enumerator_names);
             return static_cast<const decltype(all_names_)&>(all_names_);
         }
         else

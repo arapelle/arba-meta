@@ -57,7 +57,9 @@ TEST(string_enum_tests, constexpr_string_enum__construction__ok)
     ASSERT_EQ(fruit.name(), "banana");
     static_assert(fruit == Fruits::banana);
     static_assert(fruit.value() == "banana");
-    //    static_assert(fruit.name() == "banana");
+#if __cpp_constexpr >= 202211L
+    static_assert(fruit.name() == "banana");
+#endif
 }
 
 TEST(string_enum_tests, constexpr_string_enum__constexpr_enumerator_use__ok)
@@ -65,7 +67,9 @@ TEST(string_enum_tests, constexpr_string_enum__constexpr_enumerator_use__ok)
     ASSERT_EQ(Fruits::banana.value(), "banana");
     ASSERT_EQ(Fruits::banana.name(), "banana");
     static_assert(Fruits::banana.value() == "banana");
-    //    static_assert(Fruits::banana.name() == "banana");
+#if __cpp_constexpr >= 202211L
+    static_assert(Fruits::banana.name() == "banana");
+#endif
 }
 
 TEST(string_enum_tests, string_enum__enumeration_size__ok)

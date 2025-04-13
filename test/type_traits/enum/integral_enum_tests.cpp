@@ -113,7 +113,9 @@ TEST(integral_enum_tests, constexpr_primary_colors__construction__ok)
     ASSERT_EQ(color.name(), "blue");
     static_assert(color == PrimaryColors::blue);
     static_assert(color.value() == 5);
-    //    static_assert(color.name() == "blue");
+#if __cpp_constexpr >= 202211L
+        static_assert(color.name() == "blue");
+#endif
 }
 
 TEST(integral_enum_tests, primary_colors__value__ok)
@@ -151,12 +153,14 @@ TEST(integral_enum_tests, primary_colors__name__ok)
     ASSERT_EQ(PrimaryColors::yellow.name(), "yellow");
 }
 
-//TEST(integral_enum_tests, constexpr_primary_colors__name__ok)
-//{
-//    static_assert(PrimaryColors::red.name() == "red");
-//    static_assert(PrimaryColors::blue.name() == "blue");
-//    static_assert(PrimaryColors::yellow.name() == "yellow");
-//}
+#if __cpp_constexpr >= 202211L
+TEST(integral_enum_tests, constexpr_primary_colors__name__ok)
+{
+    static_assert(PrimaryColors::red.name() == "red");
+    static_assert(PrimaryColors::blue.name() == "blue");
+    static_assert(PrimaryColors::yellow.name() == "yellow");
+}
+#endif
 
 TEST(integral_enum_tests, primary_colors__enumeration_size__ok)
 {
@@ -234,7 +238,9 @@ TEST(integral_enum_tests, constexpr_colors__construction__ok)
     ASSERT_EQ(color.name(), "orange");
     static_assert(color == Colors::orange);
     static_assert(color.value() == 13);
-    //    static_assert(color.name() == "orange");
+#if __cpp_constexpr >= 202211L
+    static_assert(color.name() == "orange");
+#endif
 }
 
 TEST(integral_enum_tests, colors__value__ok)
@@ -258,12 +264,14 @@ TEST(integral_enum_tests, colors__name__ok)
     ASSERT_EQ(Colors::orange.name(), "orange");
 }
 
-//TEST(integral_enum_tests, constexpr_colors__name__ok)
-//{
-//    static_assert(Colors::purple.name() == "purple");
-//    static_assert(Colors::green.name() == "green");
-//    static_assert(Colors::orange.name() == "orange");
-//}
+#if __cpp_constexpr >= 202211L
+TEST(integral_enum_tests, constexpr_colors__name__ok)
+{
+    static_assert(Colors::purple.name() == "purple");
+    static_assert(Colors::green.name() == "green");
+    static_assert(Colors::orange.name() == "orange");
+}
+#endif
 
 TEST(integral_enum_tests, colors__enumeration_size__ok)
 {

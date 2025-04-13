@@ -63,7 +63,9 @@ TEST(bit_enum_tests, constexpr_rights__construction__ok)
     ASSERT_EQ(color.name(), "read");
     static_assert(color == Rights::read);
     static_assert(color.value() == 1);
-    //    static_assert(color.name() == "read");
+#if __cpp_constexpr >= 202211L
+    static_assert(color.name() == "read");
+#endif
 }
 
 TEST(bit_enum_tests, rights__value__ok)
@@ -101,12 +103,14 @@ TEST(bit_enum_tests, rights__name__ok)
     ASSERT_EQ(Rights::exec.name(), "exec");
 }
 
-//TEST(bit_enum_tests, constexpr_rights__name__ok)
-//{
-//    static_assert(Rights::read.name() == "read");
-//    static_assert(Rights::write.name() == "write");
-//    static_assert(Rights::exec.name() == "exec");
-//}
+#if __cpp_constexpr >= 202211L
+TEST(bit_enum_tests, constexpr_rights__name__ok)
+{
+    static_assert(Rights::read.name() == "read");
+    static_assert(Rights::write.name() == "write");
+    static_assert(Rights::exec.name() == "exec");
+}
+#endif
 
 TEST(bit_enum_tests, rights__enumeration_size__ok)
 {
