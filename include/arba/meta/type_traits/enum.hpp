@@ -44,7 +44,7 @@ template <class BaseType, bool Implicit>
 class enumerator_core_ : public enumerator_base_
 {
 protected:
-    using enumerator_core_type_ = enumerator_core_;
+    using enumerator_core_type = enumerator_core_;
 
 public:
     using value_type = BaseType;
@@ -117,7 +117,9 @@ template <class BaseType, class EnumerationType, enum_conversion EnumType = priv
 class enumerator : public private_::enumerator_parent_<BaseType, EnumType == enum_conversion::implicit_conversion>::type
 {
     using base_ = typename private_::enumerator_parent_<BaseType, EnumType == enum_conversion::implicit_conversion>::type;
-    using enumerator_type_ = enumerator;
+
+public:
+    using enumerator_type = enumerator;
 
 public:
     using enumeration = EnumerationType;
@@ -125,7 +127,7 @@ public:
     using base_type = BaseType;
 
 protected:
-    using typename base_::enumerator_core_type_;
+    using typename base_::enumerator_core_type;
     friend private_::enumeration_base_;
 
 public:
@@ -135,7 +137,7 @@ public:
         : base_(val)
     {
     }
-    consteval enumerator(const enumerator_core_type_& val) : base_(val) {}
+    consteval enumerator(const enumerator_core_type& val) : base_(val) {}
 
 #if __cpp_constexpr >= 202211L
     constexpr
@@ -183,7 +185,7 @@ protected:
         template <class... ArgsTypes>
         static consteval auto make_(typename EnumeratorType::value_type val, ArgsTypes&&... args)
         {
-            return EnumeratorType(typename EnumeratorType::enumerator_core_type_(val),
+            return EnumeratorType(typename EnumeratorType::enumerator_core_type(val),
                                   std::forward<ArgsTypes>(args)...);
         }
         friend enumeration<EnumeratorType, SelfType>;
@@ -216,7 +218,7 @@ protected:
 
 public:
     using enumerator = EnumeratorType;
-    friend typename enumerator::enumerator_type_;
+    friend typename enumerator::enumerator_type;
 
 public:
     static constexpr std::size_t size()
