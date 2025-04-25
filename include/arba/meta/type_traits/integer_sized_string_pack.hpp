@@ -1,11 +1,11 @@
 #pragma once
 
-#include <arba/meta/concept/signedness.hpp>
 #include "integer_n.hpp"
+#include <arba/meta/concept/signedness.hpp>
 
-#include <string_view>
-#include <concepts>
 #include <algorithm>
+#include <concepts>
+#include <string_view>
 
 inline namespace arba
 {
@@ -13,8 +13,7 @@ namespace meta
 {
 
 template <Signedness SignType, uint8_t IntegerBitSize, uint8_t StringBitSize>
-requires (IntegerBitSize % 8 == 0 && IntegerBitSize > 0
-         && StringBitSize % 8 == 0 && StringBitSize > 0)
+    requires(IntegerBitSize % 8 == 0 && IntegerBitSize > 0 && StringBitSize % 8 == 0 && StringBitSize > 0)
 class integer_sized_string_pack;
 
 namespace private_
@@ -24,16 +23,14 @@ class integer_sized_string_pack_base_
     constexpr integer_sized_string_pack_base_() {}
 
     template <Signedness SignType, uint8_t IntegerBitSize, uint8_t StringBitSize>
-    requires (IntegerBitSize % 8 == 0 && IntegerBitSize > 0
-             && StringBitSize % 8 == 0 && StringBitSize > 0)
+        requires(IntegerBitSize % 8 == 0 && IntegerBitSize > 0 && StringBitSize % 8 == 0 && StringBitSize > 0)
     friend class meta::integer_sized_string_pack;
 };
-}
+} // namespace private_
 
 template <Signedness SignType, uint8_t IntegerBitSize, uint8_t StringBitSize>
-    requires (IntegerBitSize % 8 == 0 && IntegerBitSize > 0
-             && StringBitSize % 8 == 0 && StringBitSize > 0)
-    class integer_sized_string_pack : public private_::integer_sized_string_pack_base_
+    requires(IntegerBitSize % 8 == 0 && IntegerBitSize > 0 && StringBitSize % 8 == 0 && StringBitSize > 0)
+class integer_sized_string_pack : public private_::integer_sized_string_pack_base_
 {
     using str_buffer_ = std::array<char, StringBitSize / 8>;
 
@@ -49,7 +46,8 @@ public:
     }
 
     template <std::size_t Size>
-    constexpr integer_sized_string_pack(integer_type ival, const char (&str)[Size]) requires (Size <= (max_string_size+1))
+    constexpr integer_sized_string_pack(integer_type ival, const char (&str)[Size])
+        requires(Size <= (max_string_size + 1))
         : int_(ival), str_len_(Size - 1)
     {
         std::copy(str, str + (Size - 1), str_.begin());
@@ -57,7 +55,9 @@ public:
     }
 
     template <std::size_t Size>
-    constexpr integer_sized_string_pack(integer_type, const char (&)[Size]) requires (Size > (max_string_size+1)) = delete;
+    constexpr integer_sized_string_pack(integer_type, const char (&)[Size])
+        requires(Size > (max_string_size + 1))
+    = delete;
 
     constexpr integer_type integer() const noexcept { return int_; }
 
@@ -76,8 +76,8 @@ private:
 };
 
 template <Signedness SignType, uint8_t IntegerBitSize, uint8_t StringBitSize>
-requires (IntegerBitSize <= 32 && StringBitSize <= 48 && IntegerBitSize + StringBitSize <= 56)
-    class integer_sized_string_pack64 : public integer_sized_string_pack<SignType, IntegerBitSize, StringBitSize>
+    requires(IntegerBitSize <= 32 && StringBitSize <= 48 && IntegerBitSize + StringBitSize <= 56)
+class integer_sized_string_pack64 : public integer_sized_string_pack<SignType, IntegerBitSize, StringBitSize>
 {
 public:
     using integer_sized_string_pack<SignType, IntegerBitSize, StringBitSize>::integer_sized_string_pack;
@@ -91,8 +91,8 @@ using i32_sstring24_pack = integer_sized_string_pack64<signed, 32, 24>;
 using u32_sstring24_pack = integer_sized_string_pack64<unsigned, 32, 24>;
 
 template <Signedness SignType, uint8_t IntegerBitSize, uint8_t StringBitSize>
-requires (IntegerBitSize <= 64 && StringBitSize <= 112 && IntegerBitSize + StringBitSize <= 120)
-    class integer_sized_string_pack128 : public integer_sized_string_pack<SignType, IntegerBitSize, StringBitSize>
+    requires(IntegerBitSize <= 64 && StringBitSize <= 112 && IntegerBitSize + StringBitSize <= 120)
+class integer_sized_string_pack128 : public integer_sized_string_pack<SignType, IntegerBitSize, StringBitSize>
 {
 public:
     using integer_sized_string_pack<SignType, IntegerBitSize, StringBitSize>::integer_sized_string_pack;
@@ -107,6 +107,7 @@ using u32_sstring88_pack = integer_sized_string_pack128<unsigned, 32, 88>;
 using i64_sstring56_pack = integer_sized_string_pack128<signed, 64, 56>;
 using u64_sstring56_pack = integer_sized_string_pack128<unsigned, 64, 56>;
 
+// clang-format off
 template <class Type>
 concept IntegerSizedStringPack = std::is_base_of_v<private_::integer_sized_string_pack_base_, Type>
                                  && requires (const Type& arg)
@@ -127,6 +128,7 @@ concept IntegerSizedStringPack64 = sizeof(Type) == 8 && IntegerSizedStringPack<T
 
 template <class Type>
 concept IntegerSizedStringPack128 = sizeof(Type) == 16 && IntegerSizedStringPack<Type>;
+// clang-format on
 
-}
-}
+} // namespace meta
+} // namespace arba

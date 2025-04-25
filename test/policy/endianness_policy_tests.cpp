@@ -9,7 +9,7 @@ uint16_t func(uint16_t n, meta::EndiannessPolicy auto)
 
 uint16_t func(uint16_t n, meta::endianness_neutral_t)
 {
-    return (n << 8)|(n >> 8);
+    return (n << 8) | (n >> 8);
 }
 
 TEST(endianness_policy_tests, test_endianness_policy)

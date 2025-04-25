@@ -115,7 +115,7 @@ TEST(integer_enum_tests, constexpr_primary_colors__construction__ok)
     static_assert(color == PrimaryColors::blue);
     static_assert(color.value() == 5);
 #if __cpp_constexpr >= 202211L
-        static_assert(color.name() == "blue");
+    static_assert(color.name() == "blue");
 #endif
 }
 
@@ -282,7 +282,8 @@ TEST(integer_enum_tests, colors__enumeration_size__ok)
 
 TEST(integer_enum_tests, colors__all__ok)
 {
-    constexpr std::array<Color, 6> expected{ Colors::red, Colors::blue, Colors::yellow, Colors::purple, Colors::green, Colors::orange };
+    constexpr std::array<Color, 6> expected{ Colors::red,    Colors::blue,  Colors::yellow,
+                                             Colors::purple, Colors::green, Colors::orange };
     ASSERT_EQ(Colors::all(), expected);
     static_assert(Colors::all() == expected);
 }

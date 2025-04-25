@@ -138,7 +138,7 @@ InsertTrailingCommas: None
 IntegerLiteralSeparator:
   Binary: 4
   BinaryMinDigits: 0
-  Decimal: 3
+  Decimal: 0
   DecimalMinDigits: 5
   Hex: 0
   HexMinDigits: 0

@@ -73,10 +73,7 @@ TEST(type_and_source_location_tests, string_view_with_source_location__implicit_
     // clang-format off
     std::string log_str = log_format("value={}", value); const std::source_location sloc = std::source_location::current();
     // clang-format on
-    std::string expected_str = std::format("[{}:{}@{}]: value={}",
-                                           sloc.file_name(),
-                                           sloc.line(),
-                                           sloc.function_name(),
-                                           value);
+    std::string expected_str =
+        std::format("[{}:{}@{}]: value={}", sloc.file_name(), sloc.line(), sloc.function_name(), value);
     ASSERT_EQ(log_str, expected_str);
 }
