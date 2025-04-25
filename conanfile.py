@@ -45,17 +45,17 @@ class ArbaMetaRecipe(ConanFile):
         version_regex = r"""set_project_semantic_version\( *"?([0-9]+\.[0-9]+\.[0-9]+).*"""
         self.version = re.search(version_regex, cmakelist_content).group(1)
 
-    def layout(self):
-        cmake_layout(self)
-
     def requirements(self):
-        self.requires("arba-cppx/[^0.1]", transitive_headers=True, transitive_libs=True)
+        self.requires("arba-cppx/[^0.3]", transitive_headers=True, transitive_libs=True)
+
+    def build_requirements(self):
+        self.test_requires("gtest/[^1.14]")
 
     def validate(self):
         check_min_cppstd(self, 20)
 
-    def build_requirements(self):
-        self.test_requires("gtest/[^1.14]")
+    def layout(self):
+        cmake_layout(self)
 
     def generate(self):
         deps = CMakeDeps(self)

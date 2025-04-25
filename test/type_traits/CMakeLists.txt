@@ -10,4 +10,8 @@ add_cpp_library_basic_tests(${PROJECT_NAME} GTest::gtest_main
         integer_n_tests.cpp
         make_mutex_type_tests.cpp
         sequence_tests.cpp
+        type_and_source_location_tests.cpp
+        integer_sized_string_pack_tests.cpp
 )
+
+add_subdirectory(enum)

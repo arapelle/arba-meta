@@ -11,7 +11,7 @@ struct scope_bound_data : public abstract_scope_bound_data
 {
     bool* valid = nullptr;
 
-    constexpr explicit scope_bound_data(bool& valid) : valid(&valid) { valid = true; }
+    constexpr explicit scope_bound_data(bool& valid_ref) : valid(&valid_ref) { valid_ref = true; }
     virtual ~scope_bound_data() override { *valid = false; }
 };
 

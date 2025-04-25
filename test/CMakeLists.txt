@@ -8,6 +8,7 @@ add_cpp_library_basic_tests(${PROJECT_NAME} GTest::gtest_main
         project_version_tests.cpp
 )
 
+add_subdirectory(algorithm)
 add_subdirectory(policy)
 add_subdirectory(concepts)
 add_subdirectory(type_traits)
