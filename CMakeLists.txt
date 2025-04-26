@@ -54,6 +54,7 @@ set(headers
     include/arba/meta/policy/exception_policy.hpp
     include/arba/meta/policy/thread_policy.hpp
     include/arba/meta/type_traits/associated_type.hpp
+    include/arba/meta/type_traits/crtp.hpp
     include/arba/meta/type_traits/default.hpp
     include/arba/meta/type_traits/enum.hpp
     include/arba/meta/type_traits/integer_n.hpp

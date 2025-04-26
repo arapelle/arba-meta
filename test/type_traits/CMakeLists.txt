@@ -15,3 +15,4 @@ add_cpp_library_basic_tests(${PROJECT_NAME} GTest::gtest_main
 )
 
 add_subdirectory(enum)
+add_subdirectory(crtp)
