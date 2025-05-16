@@ -9,14 +9,11 @@
 
 class Fruits;
 
-class Fruit : public meta::enumerator<std::string_view, Fruits>
+class Fruit final : public meta::enumerator<Fruit, Fruits, std::string_view>
 {
-private:
-    using base_ = meta::enumerator<std::string_view, Fruits>;
-
 public:
     constexpr Fruit() {}
-    consteval Fruit(const base_& val) : base_(val) {}
+    consteval Fruit(const enumerator_type& val) : enumerator_type(val) {}
 };
 
 class Fruits : public meta::enumeration<Fruit, Fruits>
