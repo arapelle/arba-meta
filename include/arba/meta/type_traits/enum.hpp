@@ -68,7 +68,8 @@ public:
         return value_;
     }
 
-    constexpr auto operator<=>(const enumerator_core_& other) const noexcept = default;
+    constexpr auto operator<=>(const enumerator_core_& other) const noexcept { return this->value() <=> other.value(); }
+    constexpr auto operator<=>(const value_type& value) const noexcept requires (Implicit) { return this->value() <=> value; }
 
 protected:
     constexpr enumerator_core_(const BaseType& val)
@@ -117,6 +118,7 @@ public:
     constexpr std::string_view name() const noexcept { return pack_.string(); }
 
     constexpr auto operator<=>(const enumerator_core_& other) const noexcept { return this->value() <=> other.value(); }
+    constexpr auto operator<=>(const value_type& value) const noexcept requires (Implicit) { return this->value() <=> value; }
 
 protected:
     constexpr enumerator_core_(const BaseType& val)
