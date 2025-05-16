@@ -38,7 +38,7 @@ class enumerator_base_
     friend class enumerator_core_;
 
 public:
-    constexpr auto operator<=>(const enumerator_base_& other) const noexcept = default;
+//    constexpr auto operator<=>(const enumerator_base_& other) const noexcept = default;
 };
 
 template <class BaseType, bool Implicit>
@@ -68,8 +68,19 @@ public:
         return value_;
     }
 
-    constexpr auto operator<=>(const enumerator_core_& other) const noexcept { return this->value() <=> other.value(); }
-    constexpr auto operator<=>(const value_type& value) const noexcept requires (Implicit) { return this->value() <=> value; }
+    constexpr bool operator==(const enumerator_core_& other) const noexcept { return this->value() == other.value(); }
+    constexpr bool operator!=(const enumerator_core_& other) const noexcept { return this->value() != other.value(); }
+    constexpr bool operator<(const enumerator_core_& other) const noexcept { return this->value() < other.value(); }
+    constexpr bool operator<=(const enumerator_core_& other) const noexcept { return this->value() <= other.value(); }
+    constexpr bool operator>(const enumerator_core_& other) const noexcept { return this->value() > other.value(); }
+    constexpr bool operator>=(const enumerator_core_& other) const noexcept { return this->value() >= other.value(); }
+
+    constexpr bool operator==(const value_type& value) const noexcept requires (implicit) { return this->value() == value; }
+    constexpr bool operator!=(const value_type& value) const noexcept requires (implicit) { return this->value() != value; }
+    constexpr bool operator<(const value_type& value) const noexcept requires (implicit) { return this->value() < value; }
+    constexpr bool operator<=(const value_type& value) const noexcept requires (implicit) { return this->value() <= value; }
+    constexpr bool operator>(const value_type& value) const noexcept requires (implicit) { return this->value() > value; }
+    constexpr bool operator>=(const value_type& value) const noexcept requires (implicit) { return this->value() >= value; }
 
 protected:
     constexpr enumerator_core_(const BaseType& val)
@@ -117,8 +128,19 @@ public:
 
     constexpr std::string_view name() const noexcept { return pack_.string(); }
 
-    constexpr auto operator<=>(const enumerator_core_& other) const noexcept { return this->value() <=> other.value(); }
-    constexpr auto operator<=>(const value_type& value) const noexcept requires (Implicit) { return this->value() <=> value; }
+    constexpr bool operator==(const enumerator_core_& other) const noexcept { return this->value() == other.value(); }
+    constexpr bool operator!=(const enumerator_core_& other) const noexcept { return this->value() != other.value(); }
+    constexpr bool operator<(const enumerator_core_& other) const noexcept { return this->value() < other.value(); }
+    constexpr bool operator<=(const enumerator_core_& other) const noexcept { return this->value() <= other.value(); }
+    constexpr bool operator>(const enumerator_core_& other) const noexcept { return this->value() > other.value(); }
+    constexpr bool operator>=(const enumerator_core_& other) const noexcept { return this->value() >= other.value(); }
+
+    constexpr bool operator==(const value_type& value) const noexcept requires (implicit) { return this->value() == value; }
+    constexpr bool operator!=(const value_type& value) const noexcept requires (implicit) { return this->value() != value; }
+    constexpr bool operator<(const value_type& value) const noexcept requires (implicit) { return this->value() < value; }
+    constexpr bool operator<=(const value_type& value) const noexcept requires (implicit) { return this->value() <= value; }
+    constexpr bool operator>(const value_type& value) const noexcept requires (implicit) { return this->value() > value; }
+    constexpr bool operator>=(const value_type& value) const noexcept requires (implicit) { return this->value() >= value; }
 
 protected:
     constexpr enumerator_core_(const BaseType& val)

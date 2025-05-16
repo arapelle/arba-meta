@@ -119,6 +119,31 @@ TEST(implicit_integer_enum_tests, constexpr_primary_colors__construction__ok)
 #endif
 }
 
+TEST(implicit_integer_enum_tests, primary_colors__comparison_with_primary_color__ok)
+{
+    static_assert(std::convertible_to<Color, Color::value_type>);
+//    ASSERT_EQ(PrimaryColors::blue, PrimaryColors::blue);
+//    ASSERT_NE(PrimaryColors::blue, PrimaryColors::red);
+//    ASSERT_LT(PrimaryColors::blue, PrimaryColors::yellow);
+//    ASSERT_LE(PrimaryColors::blue, PrimaryColors::yellow);
+//    ASSERT_GT(PrimaryColors::blue, PrimaryColors::red);
+//    ASSERT_GE(PrimaryColors::blue, PrimaryColors::red);
+
+    ASSERT_TRUE((PrimaryColors::blue == PrimaryColors::blue));
+    ASSERT_TRUE((PrimaryColors::blue != PrimaryColors::red));
+    ASSERT_TRUE((PrimaryColors::blue < PrimaryColors::yellow));
+    ASSERT_TRUE((PrimaryColors::blue <= PrimaryColors::yellow));
+    ASSERT_TRUE((PrimaryColors::blue > PrimaryColors::red));
+    ASSERT_TRUE((PrimaryColors::blue >= PrimaryColors::red));
+
+    ASSERT_FALSE((PrimaryColors::blue == PrimaryColors::red));
+    ASSERT_FALSE((PrimaryColors::blue != PrimaryColors::blue));
+    ASSERT_FALSE((PrimaryColors::yellow < PrimaryColors::blue));
+    ASSERT_FALSE((PrimaryColors::red > PrimaryColors::blue));
+    ASSERT_FALSE((PrimaryColors::yellow <= PrimaryColors::blue));
+    ASSERT_FALSE((PrimaryColors::red >= PrimaryColors::blue));
+}
+
 TEST(implicit_integer_enum_tests, primary_colors__value__ok)
 {
     ASSERT_EQ(PrimaryColors::red.value(), 3);
