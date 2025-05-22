@@ -7,7 +7,8 @@
 
 class PrimaryColors;
 
-class PrimaryColor : public meta::enumerator<PrimaryColor, PrimaryColors, int, meta::enum_conversion::explicit_conversion>
+class PrimaryColor
+    : public meta::enumerator<PrimaryColor, PrimaryColors, int, meta::enum_conversion::explicit_conversion>
 {
     ARBA_META_ENUMERATOR(PrimaryColor, 3)
 };

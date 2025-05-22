@@ -7,7 +7,8 @@
 
 class PrimaryColors;
 
-class PrimaryColor : public meta::named_u8_enumerator64<PrimaryColor, PrimaryColors, meta::enum_conversion::explicit_conversion>
+class PrimaryColor
+    : public meta::named_u8_enumerator64<PrimaryColor, PrimaryColors, meta::enum_conversion::explicit_conversion>
 {
     ARBA_META_ENUMERATOR(PrimaryColor, 3, "red")
 };

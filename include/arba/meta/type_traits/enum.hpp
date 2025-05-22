@@ -155,7 +155,8 @@ struct default_enum_type<BaseType>
 template <class BaseType>
 constexpr enum_conversion default_enum_type_v = default_enum_type<BaseType>::value;
 
-template <class SelfType, class EnumerationType, class BaseType, enum_conversion EnumType = default_enum_type_v<BaseType>>
+template <class SelfType, class EnumerationType, class BaseType,
+          enum_conversion EnumType = default_enum_type_v<BaseType>>
 class enumerator : public private_::enumerator_parent_<BaseType, EnumType == enum_conversion::implicit_conversion>::type
 {
     using base_ =
@@ -164,8 +165,8 @@ class enumerator : public private_::enumerator_parent_<BaseType, EnumType == enu
 public:
     using enumerator_type = enumerator;
     using enumeration = EnumerationType;
-    using typename base_::value_type;
     using typename base_::embedded_type;
+    using typename base_::value_type;
     using base_type = BaseType;
     using self_type = SelfType;
 
@@ -177,11 +178,13 @@ public:
     constexpr enumerator()
         requires std::is_base_of_v<private_::enumerator_base_, base_type>
         : base_()
-    {}
+    {
+    }
     constexpr enumerator()
-        requires (!std::is_base_of_v<private_::enumerator_base_, base_type>)
+        requires(!std::is_base_of_v<private_::enumerator_base_, base_type>)
         : base_(self_type::default_instance())
-    {}
+    {
+    }
     constexpr enumerator(const base_type& val)
         requires std::is_base_of_v<private_::enumerator_base_, base_type>
         : base_(val)
@@ -223,23 +226,41 @@ public:
     }
 
     template <class Type>
-        requires (std::is_same_v<Type, self_type>)
-    constexpr bool operator==(const Type& other) const noexcept { return this->value() == other.value(); }
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator==(const Type& other) const noexcept
+    {
+        return this->value() == other.value();
+    }
     template <class Type>
-        requires (std::is_same_v<Type, self_type>)
-    constexpr bool operator!=(const Type& other) const noexcept { return this->value() != other.value(); }
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator!=(const Type& other) const noexcept
+    {
+        return this->value() != other.value();
+    }
     template <class Type>
-        requires (std::is_same_v<Type, self_type>)
-    constexpr bool operator<(const Type& other) const noexcept { return this->value() < other.value(); }
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator<(const Type& other) const noexcept
+    {
+        return this->value() < other.value();
+    }
     template <class Type>
-        requires (std::is_same_v<Type, self_type>)
-    constexpr bool operator<=(const Type& other) const noexcept { return this->value() <= other.value(); }
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator<=(const Type& other) const noexcept
+    {
+        return this->value() <= other.value();
+    }
     template <class Type>
-        requires (std::is_same_v<Type, self_type>)
-    constexpr bool operator>(const Type& other) const noexcept { return this->value() > other.value(); }
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator>(const Type& other) const noexcept
+    {
+        return this->value() > other.value();
+    }
     template <class Type>
-        requires (std::is_same_v<Type, self_type>)
-    constexpr bool operator>=(const Type& other) const noexcept { return this->value() >= other.value(); }
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator>=(const Type& other) const noexcept
+    {
+        return this->value() >= other.value();
+    }
 };
 
 template <typename Type>
@@ -256,11 +277,13 @@ using named_integer_enumerator =
 
 template <class SelfType, class EnumerationType, uint8_t IntegerBitSize, uint8_t StringBitSize,
           enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_int_enumerator = named_integer_enumerator<SelfType, EnumerationType, signed, IntegerBitSize, StringBitSize, EnumType>;
+using named_int_enumerator =
+    named_integer_enumerator<SelfType, EnumerationType, signed, IntegerBitSize, StringBitSize, EnumType>;
 
 template <class SelfType, class EnumerationType, uint8_t IntegerBitSize,
           enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_int_enumerator64 = named_int_enumerator<SelfType, EnumerationType, IntegerBitSize, 64 - 8 - IntegerBitSize, EnumType>;
+using named_int_enumerator64 =
+    named_int_enumerator<SelfType, EnumerationType, IntegerBitSize, 64 - 8 - IntegerBitSize, EnumType>;
 
 template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
 using named_i8_enumerator64 = named_int_enumerator64<SelfType, EnumerationType, 8, EnumType>;
@@ -571,40 +594,51 @@ private:
 } // namespace meta
 } // namespace arba
 
-#define ARBA_META_ENUMERATOR(enumerator_name_, ...) \
-public: \
-    constexpr enumerator_name_() {} \
-    public: \
-    template <class Type> \
-    explicit enumerator_name_(const Type& other) \
-    requires (std::is_same_v<Type, enumerator_name_>) \
-    : base_(other) \
-{} \
-    public: \
-    template <class Type> \
-    self_type& operator=(const Type& other) \
-    requires (std::is_same_v<Type, self_type>) \
-{ \
-        static_cast<enumerator_type>(*this) = other; \
-        return *this; \
-} \
-    protected: \
-    template <class Type> \
-    explicit enumerator_name_(const Type& other) \
-    requires (!std::is_same_v<Type, self_type> && std::is_base_of_v<self_type, Type>) \
-    : base_(other) \
-{} \
-    protected: \
-    template <class Type> \
-    self_type& operator=(const Type& other) \
-    requires (!std::is_same_v<Type, self_type> && std::is_base_of_v<self_type, Type>) \
-{ \
-        static_cast<enumerator_type>(*this) = other; \
-        return *this; \
-} \
-    public: \
-    consteval enumerator_name_(const enumerator_type& val) : enumerator_type(val) {} \
-__VA_OPT__(static constexpr embedded_type default_instance() noexcept { return embedded_type(__VA_ARGS__); })
+#define ARBA_META_ENUMERATOR(enumerator_name_, ...)                                                                    \
+public:                                                                                                                \
+    constexpr enumerator_name_()                                                                                       \
+    {                                                                                                                  \
+    }                                                                                                                  \
+                                                                                                                       \
+public:                                                                                                                \
+    template <class Type>                                                                                              \
+    explicit enumerator_name_(const Type& other)                                                                       \
+        requires(std::is_same_v<Type, enumerator_name_>)                                                               \
+        : base_(other)                                                                                                 \
+    {                                                                                                                  \
+    }                                                                                                                  \
+                                                                                                                       \
+public:                                                                                                                \
+    template <class Type>                                                                                              \
+    self_type& operator=(const Type& other)                                                                            \
+        requires(std::is_same_v<Type, self_type>)                                                                      \
+    {                                                                                                                  \
+        static_cast<enumerator_type>(*this) = other;                                                                   \
+        return *this;                                                                                                  \
+    }                                                                                                                  \
+                                                                                                                       \
+protected:                                                                                                             \
+    template <class Type>                                                                                              \
+    explicit enumerator_name_(const Type& other)                                                                       \
+        requires(!std::is_same_v<Type, self_type> && std::is_base_of_v<self_type, Type>)                               \
+        : base_(other)                                                                                                 \
+    {                                                                                                                  \
+    }                                                                                                                  \
+                                                                                                                       \
+protected:                                                                                                             \
+    template <class Type>                                                                                              \
+    self_type& operator=(const Type& other)                                                                            \
+        requires(!std::is_same_v<Type, self_type> && std::is_base_of_v<self_type, Type>)                               \
+    {                                                                                                                  \
+        static_cast<enumerator_type>(*this) = other;                                                                   \
+        return *this;                                                                                                  \
+    }                                                                                                                  \
+                                                                                                                       \
+public:                                                                                                                \
+    consteval enumerator_name_(const enumerator_type& val) : enumerator_type(val)                                      \
+    {                                                                                                                  \
+    }                                                                                                                  \
+    __VA_OPT__(static constexpr embedded_type default_instance() noexcept { return embedded_type(__VA_ARGS__); })
 
 template <::arba::meta::Enumerator EnumeratorType>
     requires requires(const EnumeratorType& arg) {

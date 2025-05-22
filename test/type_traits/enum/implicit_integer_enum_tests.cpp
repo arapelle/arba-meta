@@ -7,7 +7,8 @@
 
 class PrimaryColors;
 
-class PrimaryColor : public meta::enumerator<PrimaryColor, PrimaryColors, int, meta::enum_conversion::implicit_conversion>
+class PrimaryColor
+    : public meta::enumerator<PrimaryColor, PrimaryColors, int, meta::enum_conversion::implicit_conversion>
 {
     ARBA_META_ENUMERATOR(PrimaryColor, 3)
 };
@@ -298,7 +299,7 @@ TEST(implicit_integer_enum_tests, colors__enumeration_size__ok)
 TEST(implicit_integer_enum_tests, colors__all__ok)
 {
     constexpr std::array<Color, 6> expected{ Colors::red,    Colors::blue,  Colors::yellow,
-                                            Colors::purple, Colors::green, Colors::orange };
+                                             Colors::purple, Colors::green, Colors::orange };
     ASSERT_EQ(Colors::all(), expected);
     static_assert(Colors::all() == expected);
 }
