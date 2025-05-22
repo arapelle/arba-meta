@@ -7,14 +7,11 @@
 
 class Rights;
 
-class Right : public meta::enumerator<uint8_t, Rights, meta::enum_conversion::explicit_conversion>
+class Right final : public meta::enumerator<Right, Rights, uint8_t, meta::enum_conversion::explicit_conversion>
 {
-private:
-    using base_ = meta::enumerator<uint8_t, Rights, meta::enum_conversion::explicit_conversion>;
-
 public:
     constexpr Right() {}
-    consteval Right(const base_& val) : base_(val) {}
+    consteval Right(const enumerator_type& val) : enumerator_type(val) {}
 };
 
 class Rights : public meta::enumeration<Right, Rights>

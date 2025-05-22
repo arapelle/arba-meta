@@ -36,9 +36,6 @@ class enumerator_base_
 
     template <class BaseType, bool>
     friend class enumerator_core_;
-
-public:
-    constexpr auto operator<=>(const enumerator_base_& other) const noexcept = default;
 };
 
 template <class BaseType, bool Implicit>
@@ -51,8 +48,6 @@ public:
     using embedded_type = BaseType;
     using value_type = BaseType;
     static constexpr bool implicit = Implicit;
-
-    constexpr enumerator_core_() {}
 
     constexpr const value_type& value() const noexcept { return value_; }
 
@@ -68,8 +63,6 @@ public:
         return value_;
     }
 
-    constexpr auto operator<=>(const enumerator_core_& other) const noexcept = default;
-
 protected:
     constexpr enumerator_core_(const BaseType& val)
         requires std::is_base_of_v<enumerator_base_, BaseType>
@@ -77,8 +70,8 @@ protected:
     {
     }
 
-private:
-    consteval enumerator_core_(value_type val) : value_(val) {}
+protected:
+    constexpr enumerator_core_(value_type val) : value_(val) {}
     friend enumeration_base_;
 
 private:
@@ -95,8 +88,6 @@ public:
     using embedded_type = BaseType;
     using value_type = typename BaseType::integer_type;
     static constexpr bool implicit = Implicit;
-
-    constexpr enumerator_core_() {}
 
     constexpr const embedded_type& pack() const noexcept { return pack_; }
 
@@ -116,8 +107,6 @@ public:
 
     constexpr std::string_view name() const noexcept { return pack_.string(); }
 
-    constexpr auto operator<=>(const enumerator_core_& other) const noexcept { return this->value() <=> other.value(); }
-
 protected:
     constexpr enumerator_core_(const BaseType& val)
         requires std::is_base_of_v<enumerator_base_, BaseType>
@@ -125,8 +114,8 @@ protected:
     {
     }
 
-private:
-    consteval enumerator_core_(const embedded_type& val) : pack_(val) {}
+protected:
+    constexpr enumerator_core_(const embedded_type& val) : pack_(val) {}
     friend enumeration_base_;
 
 private:
@@ -166,7 +155,8 @@ struct default_enum_type<BaseType>
 template <class BaseType>
 constexpr enum_conversion default_enum_type_v = default_enum_type<BaseType>::value;
 
-template <class BaseType, class EnumerationType, enum_conversion EnumType = default_enum_type_v<BaseType>>
+template <class SelfType, class EnumerationType, class BaseType,
+          enum_conversion EnumType = default_enum_type_v<BaseType>>
 class enumerator : public private_::enumerator_parent_<BaseType, EnumType == enum_conversion::implicit_conversion>::type
 {
     using base_ =
@@ -174,23 +164,36 @@ class enumerator : public private_::enumerator_parent_<BaseType, EnumType == enu
 
 public:
     using enumerator_type = enumerator;
-
-public:
     using enumeration = EnumerationType;
+    using typename base_::embedded_type;
     using typename base_::value_type;
     using base_type = BaseType;
+    using self_type = SelfType;
 
 protected:
     using typename base_::enumerator_core_type;
     friend private_::enumeration_base_;
 
 public:
-    constexpr enumerator() {}
+    constexpr enumerator()
+        requires std::is_base_of_v<private_::enumerator_base_, base_type>
+        : base_()
+    {
+    }
+    constexpr enumerator()
+        requires(!std::is_base_of_v<private_::enumerator_base_, base_type>)
+        : base_(self_type::default_instance())
+    {
+    }
     constexpr enumerator(const base_type& val)
         requires std::is_base_of_v<private_::enumerator_base_, base_type>
         : base_(val)
     {
     }
+
+    static constexpr embedded_type default_instance() noexcept { return embedded_type(); }
+
+public:
     consteval enumerator(const enumerator_core_type& val) : base_(val) {}
 
 #if __cpp_constexpr >= 202211L
@@ -221,6 +224,43 @@ public:
     {
         return enumeration::index(this->value());
     }
+
+    template <class Type>
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator==(const Type& other) const noexcept
+    {
+        return this->value() == other.value();
+    }
+    template <class Type>
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator!=(const Type& other) const noexcept
+    {
+        return this->value() != other.value();
+    }
+    template <class Type>
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator<(const Type& other) const noexcept
+    {
+        return this->value() < other.value();
+    }
+    template <class Type>
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator<=(const Type& other) const noexcept
+    {
+        return this->value() <= other.value();
+    }
+    template <class Type>
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator>(const Type& other) const noexcept
+    {
+        return this->value() > other.value();
+    }
+    template <class Type>
+        requires(std::is_same_v<Type, self_type>)
+    constexpr bool operator>=(const Type& other) const noexcept
+    {
+        return this->value() >= other.value();
+    }
 };
 
 template <typename Type>
@@ -230,70 +270,72 @@ concept Enumerator = std::is_base_of_v<private_::enumerator_base_, Type> && requ
     { arg.value() } -> std::convertible_to<typename Type::value_type>;
 };
 
-template <Signedness SignType, uint8_t IntegerBitSize, uint8_t StringBitSize, class EnumerationType,
+template <class SelfType, class EnumerationType, Signedness SignType, uint8_t IntegerBitSize, uint8_t StringBitSize,
           enum_conversion EnumType = enum_conversion::implicit_conversion>
 using named_integer_enumerator =
-    enumerator<integer_sized_string_pack<SignType, IntegerBitSize, StringBitSize>, EnumerationType, EnumType>;
+    enumerator<SelfType, EnumerationType, integer_sized_string_pack<SignType, IntegerBitSize, StringBitSize>, EnumType>;
 
-template <uint8_t IntegerBitSize, uint8_t StringBitSize, class EnumerationType,
+template <class SelfType, class EnumerationType, uint8_t IntegerBitSize, uint8_t StringBitSize,
           enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_int_enumerator = named_integer_enumerator<signed, IntegerBitSize, StringBitSize, EnumerationType, EnumType>;
+using named_int_enumerator =
+    named_integer_enumerator<SelfType, EnumerationType, signed, IntegerBitSize, StringBitSize, EnumType>;
 
-template <uint8_t IntegerBitSize, class EnumerationType,
+template <class SelfType, class EnumerationType, uint8_t IntegerBitSize,
           enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_int_enumerator64 = named_int_enumerator<IntegerBitSize, 64 - 8 - IntegerBitSize, EnumerationType, EnumType>;
+using named_int_enumerator64 =
+    named_int_enumerator<SelfType, EnumerationType, IntegerBitSize, 64 - 8 - IntegerBitSize, EnumType>;
 
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_i8_enumerator64 = named_int_enumerator64<8, EnumerationType, EnumType>;
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_i16_enumerator64 = named_int_enumerator64<16, EnumerationType, EnumType>;
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_i32_enumerator64 = named_int_enumerator64<32, EnumerationType, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_i8_enumerator64 = named_int_enumerator64<SelfType, EnumerationType, 8, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_i16_enumerator64 = named_int_enumerator64<SelfType, EnumerationType, 16, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_i32_enumerator64 = named_int_enumerator64<SelfType, EnumerationType, 32, EnumType>;
 
-template <uint8_t IntegerBitSize, class EnumerationType,
+template <class SelfType, class EnumerationType, uint8_t IntegerBitSize,
           enum_conversion EnumType = enum_conversion::implicit_conversion>
 using named_int_enumerator128 =
-    named_int_enumerator<IntegerBitSize, 128 - 8 - IntegerBitSize, EnumerationType, EnumType>;
+    named_int_enumerator<SelfType, EnumerationType, IntegerBitSize, 128 - 8 - IntegerBitSize, EnumType>;
 
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_i8_enumerator128 = named_int_enumerator128<8, EnumerationType, EnumType>;
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_i16_enumerator128 = named_int_enumerator128<16, EnumerationType, EnumType>;
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_i32_enumerator128 = named_int_enumerator128<32, EnumerationType, EnumType>;
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_i64_enumerator128 = named_int_enumerator128<64, EnumerationType, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_i8_enumerator128 = named_int_enumerator128<SelfType, EnumerationType, 8, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_i16_enumerator128 = named_int_enumerator128<SelfType, EnumerationType, 16, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_i32_enumerator128 = named_int_enumerator128<SelfType, EnumerationType, 32, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_i64_enumerator128 = named_int_enumerator128<SelfType, EnumerationType, 64, EnumType>;
 
-template <uint8_t IntegerBitSize, uint8_t StringBitSize, class EnumerationType,
+template <class SelfType, class EnumerationType, uint8_t IntegerBitSize, uint8_t StringBitSize,
           enum_conversion EnumType = enum_conversion::implicit_conversion>
 using named_uint_enumerator =
-    named_integer_enumerator<unsigned, IntegerBitSize, StringBitSize, EnumerationType, EnumType>;
+    named_integer_enumerator<SelfType, EnumerationType, unsigned, IntegerBitSize, StringBitSize, EnumType>;
 
-template <uint8_t IntegerBitSize, class EnumerationType,
+template <class SelfType, class EnumerationType, uint8_t IntegerBitSize,
           enum_conversion EnumType = enum_conversion::implicit_conversion>
 using named_uint_enumerator64 =
-    named_uint_enumerator<IntegerBitSize, 64 - 8 - IntegerBitSize, EnumerationType, EnumType>;
+    named_uint_enumerator<SelfType, EnumerationType, IntegerBitSize, 64 - 8 - IntegerBitSize, EnumType>;
 
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_u8_enumerator64 = named_uint_enumerator64<8, EnumerationType, EnumType>;
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_u16_enumerator64 = named_uint_enumerator64<16, EnumerationType, EnumType>;
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_u32_enumerator64 = named_uint_enumerator64<32, EnumerationType, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_u8_enumerator64 = named_uint_enumerator64<SelfType, EnumerationType, 8, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_u16_enumerator64 = named_uint_enumerator64<SelfType, EnumerationType, 16, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_u32_enumerator64 = named_uint_enumerator64<SelfType, EnumerationType, 32, EnumType>;
 
-template <uint8_t IntegerBitSize, class EnumerationType,
+template <class SelfType, class EnumerationType, uint8_t IntegerBitSize,
           enum_conversion EnumType = enum_conversion::implicit_conversion>
 using named_uint_enumerator128 =
-    named_uint_enumerator<IntegerBitSize, 128 - 8 - IntegerBitSize, EnumerationType, EnumType>;
+    named_uint_enumerator<SelfType, EnumerationType, IntegerBitSize, 128 - 8 - IntegerBitSize, EnumType>;
 
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_u8_enumerator128 = named_uint_enumerator128<8, EnumerationType, EnumType>;
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_u16_enumerator128 = named_uint_enumerator128<16, EnumerationType, EnumType>;
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_u32_enumerator128 = named_uint_enumerator128<32, EnumerationType, EnumType>;
-template <class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
-using named_u64_enumerator128 = named_uint_enumerator128<64, EnumerationType, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_u8_enumerator128 = named_uint_enumerator128<SelfType, EnumerationType, 8, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_u16_enumerator128 = named_uint_enumerator128<SelfType, EnumerationType, 16, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_u32_enumerator128 = named_uint_enumerator128<SelfType, EnumerationType, 32, EnumType>;
+template <class SelfType, class EnumerationType, enum_conversion EnumType = enum_conversion::implicit_conversion>
+using named_u64_enumerator128 = named_uint_enumerator128<SelfType, EnumerationType, 64, EnumType>;
 
 // enumeration
 
@@ -551,6 +593,52 @@ private:
 
 } // namespace meta
 } // namespace arba
+
+#define ARBA_META_ENUMERATOR(enumerator_name_, ...)                                                                    \
+public:                                                                                                                \
+    constexpr enumerator_name_()                                                                                       \
+    {                                                                                                                  \
+    }                                                                                                                  \
+                                                                                                                       \
+public:                                                                                                                \
+    template <class Type>                                                                                              \
+    explicit enumerator_name_(const Type& other)                                                                       \
+        requires(std::is_same_v<Type, enumerator_name_>)                                                               \
+        : base_(other)                                                                                                 \
+    {                                                                                                                  \
+    }                                                                                                                  \
+                                                                                                                       \
+public:                                                                                                                \
+    template <class Type>                                                                                              \
+    self_type& operator=(const Type& other)                                                                            \
+        requires(std::is_same_v<Type, self_type>)                                                                      \
+    {                                                                                                                  \
+        static_cast<enumerator_type>(*this) = other;                                                                   \
+        return *this;                                                                                                  \
+    }                                                                                                                  \
+                                                                                                                       \
+protected:                                                                                                             \
+    template <class Type>                                                                                              \
+    explicit enumerator_name_(const Type& other)                                                                       \
+        requires(!std::is_same_v<Type, self_type> && std::is_base_of_v<self_type, Type>)                               \
+        : base_(other)                                                                                                 \
+    {                                                                                                                  \
+    }                                                                                                                  \
+                                                                                                                       \
+protected:                                                                                                             \
+    template <class Type>                                                                                              \
+    self_type& operator=(const Type& other)                                                                            \
+        requires(!std::is_same_v<Type, self_type> && std::is_base_of_v<self_type, Type>)                               \
+    {                                                                                                                  \
+        static_cast<enumerator_type>(*this) = other;                                                                   \
+        return *this;                                                                                                  \
+    }                                                                                                                  \
+                                                                                                                       \
+public:                                                                                                                \
+    consteval enumerator_name_(const enumerator_type& val) : enumerator_type(val)                                      \
+    {                                                                                                                  \
+    }                                                                                                                  \
+    __VA_OPT__(static constexpr embedded_type default_instance() noexcept { return embedded_type(__VA_ARGS__); })
 
 template <::arba::meta::Enumerator EnumeratorType>
     requires requires(const EnumeratorType& arg) {
