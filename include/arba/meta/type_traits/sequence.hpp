@@ -146,5 +146,23 @@ struct decayed_type_sequence_element_index<type_sequence<U, Ts...>, T>
 template <typename TypeSequence, typename T>
 constexpr std::size_t decayed_type_sequence_element_index_v = decayed_type_sequence_element_index<TypeSequence, T>::value;
 
+template <typename TypeSequence, typename T>
+struct type_sequence_contains
+{
+    static constexpr bool value = type_sequence_element_index_v<TypeSequence, T> != TypeSequence::size();
+};
+
+template <typename TypeSequence, typename T>
+constexpr std::size_t type_sequence_contains_v = type_sequence_contains<TypeSequence, T>::value;
+
+template <typename TypeSequence, typename T>
+struct decayed_type_sequence_contains
+{
+    static constexpr bool value = decayed_type_sequence_element_index_v<TypeSequence, T> != TypeSequence::size();
+};
+
+template <typename TypeSequence, typename T>
+constexpr std::size_t decayed_type_sequence_contains_v = decayed_type_sequence_contains<TypeSequence, T>::value;
+
 } // namespace meta
 } // namespace arba
