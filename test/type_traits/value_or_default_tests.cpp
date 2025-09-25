@@ -38,14 +38,14 @@ std::string tfunc(const ValueType& input_value, OptionType& input_option)
     return std::format("{}{} {}{}", value_prefix, static_cast<int>(value), option_prefix, static_cast<int>(option));
 }
 
-TEST(value_or_tests, test_value_or__default_default__ok)
+TEST(value_or_default_tests, test_value_or__default_default__ok)
 {
     default_arg::destructor_counter() = 0;
     ASSERT_EQ(tfunc(meta::default_v, meta::default_v), "D1000 D1000");
     ASSERT_EQ(default_arg::destructor_counter(), 2);
 }
 
-TEST(value_or_tests, test_value_or__default_int__ok)
+TEST(value_or_default_tests, test_value_or__default_int__ok)
 {
     default_arg::destructor_counter() = 0;
     int option = 100;
@@ -54,7 +54,7 @@ TEST(value_or_tests, test_value_or__default_int__ok)
     ASSERT_EQ(default_arg::destructor_counter(), 2);
 }
 
-TEST(value_or_tests, test_value_or__int_int__ok)
+TEST(value_or_default_tests, test_value_or__int_int__ok)
 {
     default_arg::destructor_counter() = 0;
     int option = 100;
