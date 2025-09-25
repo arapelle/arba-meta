@@ -95,3 +95,42 @@ TEST(sequence_tests, decayed_tuple_element_index__type_not_in_tuple__ok)
     static_assert(meta::decayed_tuple_element_index_v<tuple_t, std::string> == std::tuple_size_v<tuple_t>);
     SUCCEED();
 }
+
+TEST(sequence_tests, type_sequence_element_index__type_in_type_sequence__ok)
+{
+    using type_sequence_t = meta::type_sequence<int, float, double>;
+    static_assert(meta::type_sequence_element_index_v<type_sequence_t, int> == 0);
+    static_assert(meta::type_sequence_element_index_v<type_sequence_t, float> == 1);
+    static_assert(meta::type_sequence_element_index_v<type_sequence_t, double> == 2);
+    SUCCEED();
+}
+
+TEST(sequence_tests, type_sequence_element_index__type_not_in_type_sequence__ok)
+{
+    using type_sequence_t = meta::type_sequence<int, float, double>;
+    static_assert(meta::type_sequence_element_index_v<type_sequence_t, int&> == type_sequence_t::size());
+    static_assert(meta::type_sequence_element_index_v<type_sequence_t, int&&> == type_sequence_t::size());
+    static_assert(meta::type_sequence_element_index_v<type_sequence_t, const int&> == type_sequence_t::size());
+    static_assert(meta::type_sequence_element_index_v<type_sequence_t, std::string> == type_sequence_t::size());
+    SUCCEED();
+}
+
+TEST(sequence_tests, decayed_type_sequence_element_index__type_in_type_sequence__ok)
+{
+    using type_sequence_t = meta::type_sequence<int, float, const double>;
+    static_assert(meta::decayed_type_sequence_element_index_v<type_sequence_t, int> == 0);
+    static_assert(meta::decayed_type_sequence_element_index_v<type_sequence_t, float> == 1);
+    static_assert(meta::decayed_type_sequence_element_index_v<type_sequence_t, double> == 2);
+    using ref_type_sequence_t = meta::type_sequence<int&, float&&, const double&>;
+    static_assert(meta::decayed_type_sequence_element_index_v<ref_type_sequence_t, int> == 0);
+    static_assert(meta::decayed_type_sequence_element_index_v<ref_type_sequence_t, float> == 1);
+    static_assert(meta::decayed_type_sequence_element_index_v<ref_type_sequence_t, double> == 2);
+    SUCCEED();
+}
+
+TEST(sequence_tests, decayed_type_sequence_element_index__type_not_in_type_sequence__ok)
+{
+    using type_sequence_t = meta::type_sequence<int&, float&&, const double&>;
+    static_assert(meta::decayed_type_sequence_element_index_v<type_sequence_t, std::string> == type_sequence_t::size());
+    SUCCEED();
+}
