@@ -39,6 +39,7 @@ configure_headers(configured_headers
 ## Headers:
 set(headers
     include/arba/meta/algorithm/concat.hpp
+    include/arba/meta/algorithm/filter_and_make_tuple.hpp
     include/arba/meta/concept/addable.hpp
     include/arba/meta/concept/arithmetic.hpp
     include/arba/meta/concept/bitwise_logical.hpp
