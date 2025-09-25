@@ -56,3 +56,42 @@ TEST(sequence_tests, queue_type__my_int_seq__ok)
     static_assert(std::is_same_v<meta::queue_type_t<my_int_seq<6, 4, 2>>, my_int_seq<4, 2>>);
     SUCCEED();
 }
+
+TEST(sequence_tests, tuple_element_index__type_in_tuple__ok)
+{
+    using tuple_t = std::tuple<int, float, double>;
+    static_assert(meta::tuple_element_index_v<tuple_t, int> == 0);
+    static_assert(meta::tuple_element_index_v<tuple_t, float> == 1);
+    static_assert(meta::tuple_element_index_v<tuple_t, double> == 2);
+    SUCCEED();
+}
+
+TEST(sequence_tests, tuple_element_index__type_not_in_tuple__ok)
+{
+    using tuple_t = std::tuple<int, float, double>;
+    static_assert(meta::tuple_element_index_v<tuple_t, int&> == std::tuple_size_v<tuple_t>);
+    static_assert(meta::tuple_element_index_v<tuple_t, int&&> == std::tuple_size_v<tuple_t>);
+    static_assert(meta::tuple_element_index_v<tuple_t, const int&> == std::tuple_size_v<tuple_t>);
+    static_assert(meta::tuple_element_index_v<tuple_t, std::string> == std::tuple_size_v<tuple_t>);
+    SUCCEED();
+}
+
+TEST(sequence_tests, decayed_tuple_element_index__type_in_tuple__ok)
+{
+    using tuple_t = std::tuple<int, float, const double>;
+    static_assert(meta::decayed_tuple_element_index_v<tuple_t, int> == 0);
+    static_assert(meta::decayed_tuple_element_index_v<tuple_t, float> == 1);
+    static_assert(meta::decayed_tuple_element_index_v<tuple_t, double> == 2);
+    using ref_tuple_t = std::tuple<int&, float&&, const double&>;
+    static_assert(meta::decayed_tuple_element_index_v<ref_tuple_t, int> == 0);
+    static_assert(meta::decayed_tuple_element_index_v<ref_tuple_t, float> == 1);
+    static_assert(meta::decayed_tuple_element_index_v<ref_tuple_t, double> == 2);
+    SUCCEED();
+}
+
+TEST(sequence_tests, decayed_tuple_element_index__type_not_in_tuple__ok)
+{
+    using tuple_t = std::tuple<int&, float&&, const double&>;
+    static_assert(meta::decayed_tuple_element_index_v<tuple_t, std::string> == std::tuple_size_v<tuple_t>);
+    SUCCEED();
+}

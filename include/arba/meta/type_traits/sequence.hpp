@@ -70,5 +70,43 @@ struct queue_type<TypeSequence<Arg, Args...>>
 template <class T>
 using queue_type_t = typename queue_type<T>::type;
 
+template <typename Tuple, typename T>
+struct tuple_element_index;
+
+template <typename T>
+struct tuple_element_index<std::tuple<>, T>
+{
+    static constexpr std::size_t value = 0;
+};
+
+template <typename T, typename U, typename... Ts>
+struct tuple_element_index<std::tuple<U, Ts...>, T>
+{
+    static constexpr std::size_t value = std::is_same_v<T, U> ? 0 :
+                                             (1 + tuple_element_index<std::tuple<Ts...>, T>::value);
+};
+
+template <typename Tuple, typename T>
+constexpr std::size_t tuple_element_index_v = tuple_element_index<Tuple, T>::value;
+
+template <typename Tuple, typename T>
+struct decayed_tuple_element_index;
+
+template <typename T>
+struct decayed_tuple_element_index<std::tuple<>, T>
+{
+    static constexpr std::size_t value = 0;
+};
+
+template <typename T, typename U, typename... Ts>
+struct decayed_tuple_element_index<std::tuple<U, Ts...>, T>
+{
+    static constexpr std::size_t value = std::is_same_v<T, std::decay_t<U>> ? 0 :
+                                             (1 + decayed_tuple_element_index<std::tuple<Ts...>, T>::value);
+};
+
+template <typename Tuple, typename T>
+constexpr std::size_t decayed_tuple_element_index_v = decayed_tuple_element_index<Tuple, T>::value;
+
 } // namespace meta
 } // namespace arba
