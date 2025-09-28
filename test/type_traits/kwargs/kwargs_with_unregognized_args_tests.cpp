@@ -2,9 +2,8 @@
 
 #include <gtest/gtest.h>
 
-#include <sstream>
 #include <format>
-#include <cassert>
+#include <sstream>
 
 namespace ut
 {
@@ -15,7 +14,7 @@ ARBA_META_KWARG(frame_width, unsigned);
 ARBA_META_KWARG(frame_height, unsigned);
 ARBA_META_KWARG(title, std::string);
 
-}
+} // namespace algo_kwargs
 
 template <typename... Args>
 void algo_base(std::string& result, unsigned frame_width, unsigned frame_height, std::string_view title, Args&&... args)
@@ -39,11 +38,11 @@ void algo(std::string& result, Args&&... args)
     const meta::kwargs_parser<Args...> kwargs_parser(std::forward<Args>(args)...);
     const unsigned frame_width = kwargs_parser.template arg_or_default<algo_kwargs::frame_width>(200);
     const unsigned frame_height = kwargs_parser.template arg_or_default<algo_kwargs::frame_height>(100);
-    const std::string title = kwargs_parser.template arg_or_generate<algo_kwargs::title>([]{ return "title"; });
-    kwargs_parser.apply_with_unrecognized_args([](auto&&... as){ algo_base(std::forward<decltype(as)>(as)...); },
+    const std::string title = kwargs_parser.template arg_or_generate<algo_kwargs::title>([] { return "title"; });
+    kwargs_parser.apply_with_unrecognized_args([](auto&&... as) { algo_base(std::forward<decltype(as)>(as)...); },
                                                std::ref(result), frame_width, frame_height, title);
 }
-}
+} // namespace ut
 
 TEST(kwargs_with_unregognized_args_tests, kwargs_parser__default_values__ok)
 {

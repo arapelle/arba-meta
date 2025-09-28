@@ -3,8 +3,8 @@
 #include "sequence.hpp"
 #include <arba/meta/algorithm/filter_and_make_tuple.hpp>
 
-#include <type_traits>
 #include <tuple>
+#include <type_traits>
 
 inline namespace arba
 {
@@ -27,9 +27,7 @@ template <class Type>
 class kwarg<Type> : public kwarg_base_
 {
 public:
-    kwarg(Type arg)
-        : value_(arg)
-    {}
+    kwarg(Type arg) : value_(arg) {}
 
     inline operator const Type&() const { return value_; }
     inline operator Type&() { return value_; }
@@ -45,13 +43,9 @@ template <class Type>
 class kwarg<Type> : public kwarg_base_
 {
 public:
-    kwarg(Type arg)
-        : value_(arg)
-    {}
+    kwarg(Type arg) : value_(arg) {}
 
-    kwarg(std::reference_wrapper<std::remove_reference_t<Type>> arg)
-        : value_(static_cast<Type>(arg))
-    {}
+    kwarg(std::reference_wrapper<std::remove_reference_t<Type>> arg) : value_(static_cast<Type>(arg)) {}
 
     inline operator const Type() const { return value_; }
     inline operator Type() { return value_; }
@@ -72,16 +66,15 @@ public:
     using underlying_type = Type;
 };
 
-#define ARBA_META_KWARG(Keyword_, Type_) \
-class Keyword_ : public ::arba::meta::kwarg<Type_> \
-{ \
-        public: \
-        using ::arba::meta::kwarg<Type_>::kwarg; \
-}
+#define ARBA_META_KWARG(Keyword_, Type_)                                                                               \
+    class Keyword_ : public ::arba::meta::kwarg<Type_>                                                                 \
+    {                                                                                                                  \
+    public:                                                                                                            \
+        using ::arba::meta::kwarg<Type_>::kwarg;                                                                       \
+    }
 
 template <class T, class... Kwargs>
-concept Kwarg = (sizeof...(Kwargs) > 0)
-                && (std::is_base_of_v<meta::kwarg_base_, Kwargs> && ...)
+concept Kwarg = (sizeof...(Kwargs) > 0) && (std::is_base_of_v<meta::kwarg_base_, Kwargs> && ...)
                 && (std::is_same_v<T, Kwargs> || ...);
 
 template <class... Types>
@@ -91,9 +84,7 @@ private:
     using tuple_type_ = std::tuple<Types&&...>;
 
 public:
-    kwargs_parser(Types&&... args)
-        : t_args_(std::forward_as_tuple(std::forward<Types>(args)...))
-    {}
+    kwargs_parser(Types&&... args) : t_args_(std::forward_as_tuple(std::forward<Types>(args)...)) {}
 
     template <class RequestedType>
     decltype(auto) arg_or_default(const RequestedType& default_value) const
@@ -130,9 +121,7 @@ public:
     decltype(auto) unrecognized_args() const
     {
         auto filter_not_kwargs_ = [](auto&&... args)
-        {
-            return filter_and_forward_as_tuple<not_kwarg_t_>(std::forward<decltype(args)>(args)...);
-        };
+        { return filter_and_forward_as_tuple<not_kwarg_t_>(std::forward<decltype(args)>(args)...); };
 
         return std::apply(filter_not_kwargs_, t_args_);
     }
@@ -152,5 +141,5 @@ private:
     std::tuple<Types&&...> t_args_;
 };
 
-}
-}
+} // namespace meta
+} // namespace arba

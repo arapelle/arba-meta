@@ -82,8 +82,8 @@ struct tuple_element_index<std::tuple<>, T>
 template <typename T, typename U, typename... Ts>
 struct tuple_element_index<std::tuple<U, Ts...>, T>
 {
-    static constexpr std::size_t value = std::is_same_v<T, U> ? 0 :
-                                             (1 + tuple_element_index<std::tuple<Ts...>, T>::value);
+    static constexpr std::size_t value =
+        std::is_same_v<T, U> ? 0 : (1 + tuple_element_index<std::tuple<Ts...>, T>::value);
 };
 
 template <typename Tuple, typename T>
@@ -101,8 +101,8 @@ struct decayed_tuple_element_index<std::tuple<>, T>
 template <typename T, typename U, typename... Ts>
 struct decayed_tuple_element_index<std::tuple<U, Ts...>, T>
 {
-    static constexpr std::size_t value = std::is_same_v<T, std::decay_t<U>> ? 0 :
-                                             (1 + decayed_tuple_element_index<std::tuple<Ts...>, T>::value);
+    static constexpr std::size_t value =
+        std::is_same_v<T, std::decay_t<U>> ? 0 : (1 + decayed_tuple_element_index<std::tuple<Ts...>, T>::value);
 };
 
 template <typename Tuple, typename T>
@@ -120,8 +120,8 @@ struct type_sequence_element_index<type_sequence<>, T>
 template <typename T, typename U, typename... Ts>
 struct type_sequence_element_index<type_sequence<U, Ts...>, T>
 {
-    static constexpr std::size_t value = std::is_same_v<T, U> ? 0 :
-                                             (1 + type_sequence_element_index<type_sequence<Ts...>, T>::value);
+    static constexpr std::size_t value =
+        std::is_same_v<T, U> ? 0 : (1 + type_sequence_element_index<type_sequence<Ts...>, T>::value);
 };
 
 template <typename TypeSequence, typename T>
@@ -139,12 +139,14 @@ struct decayed_type_sequence_element_index<type_sequence<>, T>
 template <typename T, typename U, typename... Ts>
 struct decayed_type_sequence_element_index<type_sequence<U, Ts...>, T>
 {
-    static constexpr std::size_t value = std::is_same_v<T, std::decay_t<U>> ? 0 :
+    static constexpr std::size_t value = std::is_same_v<T, std::decay_t<U>> ?
+                                             0 :
                                              (1 + decayed_type_sequence_element_index<type_sequence<Ts...>, T>::value);
 };
 
 template <typename TypeSequence, typename T>
-constexpr std::size_t decayed_type_sequence_element_index_v = decayed_type_sequence_element_index<TypeSequence, T>::value;
+constexpr std::size_t decayed_type_sequence_element_index_v =
+    decayed_type_sequence_element_index<TypeSequence, T>::value;
 
 template <typename TypeSequence, typename T>
 struct type_sequence_contains

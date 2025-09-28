@@ -21,11 +21,12 @@ auto make_specified_tuple_(Args&&... args)
         return TupleType(std::forward<Args>(args)...);
     }
 }
-}
+} // namespace private_
 
 template <template <class> typename Predicate, typename... Args>
 constexpr auto filter_and_make_tuple(Args&&... args)
 {
+    // clang-format off
     return std::tuple_cat(
         private_::make_specified_tuple_<
             std::conditional_t<
@@ -35,11 +36,13 @@ constexpr auto filter_and_make_tuple(Args&&... args)
                 >
             >(args)...
         );
+    // clang-format on
 }
 
 template <template <class> typename Predicate, typename... Args>
 constexpr auto filter_and_forward_as_tuple(Args&&... args)
 {
+    // clang-format off
     return std::tuple_cat(
         private_::make_specified_tuple_<
             std::conditional_t<
@@ -49,6 +52,7 @@ constexpr auto filter_and_forward_as_tuple(Args&&... args)
                 >
             >(std::forward<Args>(args))...
         );
+    // clang-format on
 }
-}
-}
+} // namespace meta
+} // namespace arba
