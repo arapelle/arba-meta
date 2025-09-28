@@ -19,7 +19,7 @@ set_build_type_ifndef()
 
 set_project_name(NAMESPACE "arba" FEATURE_NAME "meta")
 string(TIMESTAMP configure_datetime "%Y%m%d-%H%M%S")
-set_project_semantic_version("0.5.0" BUILD_METADATA "${configure_datetime}")
+set_project_semantic_version("0.6.0" BUILD_METADATA "${configure_datetime}")
 
 project(${PROJECT_NAME}
         VERSION ${PROJECT_VERSION}
@@ -39,6 +39,7 @@ configure_headers(configured_headers
 ## Headers:
 set(headers
     include/arba/meta/algorithm/concat.hpp
+    include/arba/meta/algorithm/filter_and_make_tuple.hpp
     include/arba/meta/concept/addable.hpp
     include/arba/meta/concept/arithmetic.hpp
     include/arba/meta/concept/bitwise_logical.hpp
@@ -60,6 +61,7 @@ set(headers
     include/arba/meta/type_traits/integer_n.hpp
     include/arba/meta/type_traits/integer_sized_string_pack.hpp
     include/arba/meta/type_traits/is_moveable_to_itself.hpp
+    include/arba/meta/type_traits/kwargs.hpp
     include/arba/meta/type_traits/make_mutex_type.hpp
     include/arba/meta/type_traits/remove_right_reference.hpp
     include/arba/meta/type_traits/sequence.hpp
