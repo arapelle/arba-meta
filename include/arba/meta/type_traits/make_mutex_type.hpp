@@ -1,6 +1,6 @@
 #pragma once
 
-#include <arba/meta/policy/thread_policy.hpp>
+#include <arba/meta/concept/policy/thread_policy.hpp>
 
 #include <mutex>
 
