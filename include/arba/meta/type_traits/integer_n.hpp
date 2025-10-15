@@ -1,7 +1,7 @@
 #pragma once
 
-#include <arba/meta/concept/signedness.hpp>
 #include <arba/meta/concept/policy/thread_policy.hpp>
+#include <arba/meta/concept/signedness.hpp>
 
 #include <atomic>
 #include <cstdint>

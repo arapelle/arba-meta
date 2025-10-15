@@ -11,5 +11,5 @@ namespace meta
 template <class Type>
 concept ExecutionPolicy = std::is_execution_policy_v<Type>;
 
-}
-}
+} // namespace meta
+} // namespace arba
