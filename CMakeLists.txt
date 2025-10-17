@@ -19,7 +19,7 @@ set_build_type_ifndef()
 
 set_project_name(NAMESPACE "arba" FEATURE_NAME "meta")
 string(TIMESTAMP configure_datetime "%Y%m%d-%H%M%S")
-set_project_semantic_version("0.6.0" BUILD_METADATA "${configure_datetime}")
+set_project_semantic_version("0.7.0" BUILD_METADATA "${configure_datetime}")
 
 project(${PROJECT_NAME}
         VERSION ${PROJECT_VERSION}
@@ -51,9 +51,10 @@ set(headers
     include/arba/meta/concept/multipliable.hpp
     include/arba/meta/concept/signedness.hpp
     include/arba/meta/concept/totally_arithmetic.hpp
-    include/arba/meta/policy/endianness_policy.hpp
-    include/arba/meta/policy/exception_policy.hpp
-    include/arba/meta/policy/thread_policy.hpp
+    include/arba/meta/concept/policy/endianness_policy.hpp
+    include/arba/meta/concept/policy/exception_policy.hpp
+    include/arba/meta/concept/policy/execution_policy.hpp
+    include/arba/meta/concept/policy/thread_policy.hpp
     include/arba/meta/type_traits/associated_type.hpp
     include/arba/meta/type_traits/crtp.hpp
     include/arba/meta/type_traits/default.hpp
