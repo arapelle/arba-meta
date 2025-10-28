@@ -62,7 +62,7 @@ set(headers
     include/arba/meta/type_traits/make_mutex_type.hpp
     include/arba/meta/type_traits/remove_right_reference.hpp
     include/arba/meta/type_traits/sequence.hpp
-    include/arba/meta/type_traits/type_and_source_location.hpp
+    include/arba/meta/type_traits/paired_with_source_location.hpp
     include/arba/meta/type_traits/type_or_default.hpp
     include/arba/meta/type_traits/value_or_default.hpp
     include/arba/meta/type_traits/value_or_generate.hpp
