@@ -14,14 +14,14 @@ TEST(dummy_mutex_tests, dummy_mutex__with_lock_guard__ok)
 
 TEST(make_mutex_type_tests, make_mutex_type__default_mutex_type__ok)
 {
-    static_assert(std::is_same_v<meta::make_mutex_type_t<meta::thread_safe_t>, std::mutex>);
-    static_assert(std::is_same_v<meta::make_mutex_type_t<meta::thread_unsafe_t>, meta::dummy_mutex>);
+    static_assert(std::is_same_v<meta::make_mutex_type_t<cppx::thread_safe_t>, std::mutex>);
+    static_assert(std::is_same_v<meta::make_mutex_type_t<cppx::thread_unsafe_t>, meta::dummy_mutex>);
     SUCCEED();
 }
 
 TEST(make_mutex_type_tests, make_mutex_type__other_mutex_type__ok)
 {
-    static_assert(std::is_same_v<meta::make_mutex_type_t<meta::thread_safe_t, std::shared_mutex>, std::shared_mutex>);
-    static_assert(std::is_same_v<meta::make_mutex_type_t<meta::thread_unsafe_t, std::shared_mutex>, meta::dummy_mutex>);
+    static_assert(std::is_same_v<meta::make_mutex_type_t<cppx::thread_safe_t, std::shared_mutex>, std::shared_mutex>);
+    static_assert(std::is_same_v<meta::make_mutex_type_t<cppx::thread_unsafe_t, std::shared_mutex>, meta::dummy_mutex>);
     SUCCEED();
 }

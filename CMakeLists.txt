@@ -51,9 +51,6 @@ set(headers
     include/arba/meta/concept/multipliable.hpp
     include/arba/meta/concept/signedness.hpp
     include/arba/meta/concept/totally_arithmetic.hpp
-    include/arba/meta/concept/policy/endianness_policy.hpp
-    include/arba/meta/concept/policy/exception_policy.hpp
-    include/arba/meta/concept/policy/thread_policy.hpp
     include/arba/meta/type_traits/associated_type.hpp
     include/arba/meta/type_traits/crtp.hpp
     include/arba/meta/type_traits/default.hpp
@@ -83,7 +80,7 @@ add_cpp_library(${PROJECT_NAME} HEADER_ONLY
 add_library("${PROJECT_NAMESPACE}::${PROJECT_FEATURE_NAME}" ALIAS ${PROJECT_NAME})
 
 ## Link C++ targets:
-find_package(arba-cppx 0.3.0 REQUIRED CONFIG)
+find_package(arba-cppx 0.4.0 REQUIRED CONFIG)
 target_link_libraries(${PROJECT_NAME}
     INTERFACE
         arba::cppx

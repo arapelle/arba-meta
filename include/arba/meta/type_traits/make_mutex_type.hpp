@@ -1,6 +1,6 @@
 #pragma once
 
-#include <arba/meta/concept/policy/thread_policy.hpp>
+#include <arba/cppx/policy/thread_policy.hpp>
 
 #include <mutex>
 
@@ -26,22 +26,22 @@ public:
     }
 };
 
-template <ThreadPolicy, class MutexType = std::mutex>
+template <cppx::ThreadPolicy, class MutexType = std::mutex>
 struct make_mutex_type;
 
 template <class MutexType>
-struct make_mutex_type<thread_safe_t, MutexType>
+struct make_mutex_type<cppx::thread_safe_t, MutexType>
 {
     using type = MutexType;
 };
 
 template <class MutexType>
-struct make_mutex_type<thread_unsafe_t, MutexType>
+struct make_mutex_type<cppx::thread_unsafe_t, MutexType>
 {
     using type = dummy_mutex;
 };
 
-template <ThreadPolicy ThreadPolicyType, class MutexType = std::mutex>
+template <cppx::ThreadPolicy ThreadPolicyType, class MutexType = std::mutex>
 using make_mutex_type_t = typename make_mutex_type<ThreadPolicyType, MutexType>::type;
 
 } // namespace meta
