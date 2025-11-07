@@ -37,18 +37,18 @@ using associated_type_or_default_t = typename associated_type_or_default<TagType
 
 // macro define helper
 
-#define ARBA_META_DEFINE_ASSOCIATED_TYPE(TagType, ObservedType, AssociatedType)                                        \
+#define ARBA_META_ASSOCIATE_TYPES(TagType, ObservedType, AssociatedType)                                               \
     template <>                                                                                                        \
     struct arba::meta::associated_type<TagType, ARBA_CPPX_PP_IDENTITY_TYPE(ObservedType)>                              \
     {                                                                                                                  \
         using type = ARBA_CPPX_PP_IDENTITY_TYPE(AssociatedType);                                                       \
     }
 
-#ifndef META_DEFINE_ASSOCIATED_TYPE
-#define META_DEFINE_ASSOCIATED_TYPE(TagType, ObservedType, AssociatedType_)                                            \
-    ARBA_META_DEFINE_ASSOCIATED_TYPE(TagType, ObservedType, AssociatedType_)
+#ifndef META_ASSOCIATE_TYPES
+#define META_ASSOCIATE_TYPES(TagType, ObservedType, AssociatedType_)                                                   \
+    ARBA_META_ASSOCIATE_TYPES(TagType, ObservedType, AssociatedType_)
 #else
 #if defined(__GNUC__) || defined(__GNUG__) || defined(_MSC_VER) || defined(__clang__)
-#pragma message "META_DEFINE_ASSOCIATED_TYPE already exists. You must use ARBA_META_DEFINE_ASSOCIATED_TYPE."
+#pragma message "META_ASSOCIATE_TYPES already exists. You must use ARBA_META_ASSOCIATE_TYPES."
 #endif
 #endif

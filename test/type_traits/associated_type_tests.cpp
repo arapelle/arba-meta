@@ -4,7 +4,7 @@
 
 class pair_tag;
 
-META_DEFINE_ASSOCIATED_TYPE(pair_tag, std::string, (std::pair<std::string, std::string>));
+META_ASSOCIATE_TYPES(pair_tag, std::string, (std::pair<std::string, std::string>));
 
 using pair_string_t = std::pair<std::string, std::string>;
 using pair_int_t = std::pair<int, int>;
