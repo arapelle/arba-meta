@@ -1,7 +1,8 @@
 #pragma once
 
 #include <arba/meta/concept/signedness.hpp>
-#include <arba/meta/policy/thread_policy.hpp>
+
+#include <arba/cppx/policy/thread_policy.hpp>
 
 #include <atomic>
 #include <cstdint>
@@ -16,11 +17,11 @@ namespace meta
 
 // integer_n
 
-template <unsigned BitSize, Signedness = signed, ThreadPolicy = thread_unsafe_t>
+template <unsigned BitSize, Signedness = signed, cppx::ThreadPolicy = cppx::thread_unsafe_t>
     requires((BitSize % 8) == 0 && BitSize > 0 && BitSize <= (sizeof(std::uintmax_t) * 8))
 struct integer_n;
 
-template <unsigned BitSize, Signedness SignType = signed, ThreadPolicy ThreadPolicyType = thread_unsafe_t>
+template <unsigned BitSize, Signedness SignType = signed, cppx::ThreadPolicy ThreadPolicyType = cppx::thread_unsafe_t>
 using integer_n_t = typename integer_n<BitSize, SignType, ThreadPolicyType>::type;
 
 template <>
@@ -54,65 +55,65 @@ struct integer_n<BitSize, unsigned>
 };
 
 template <unsigned BitSize, Signedness SignType>
-struct integer_n<BitSize, SignType, thread_safe_t>
+struct integer_n<BitSize, SignType, cppx::thread_safe_t>
 {
     using type = std::atomic<integer_n_t<BitSize, SignType>>;
 };
 
 // int_n_t
 
-template <unsigned BitSize, ThreadPolicy ThreadPolicyType = thread_unsafe_t>
+template <unsigned BitSize, cppx::ThreadPolicy ThreadPolicyType = cppx::thread_unsafe_t>
 using int_n_t = typename integer_n<BitSize, signed, ThreadPolicyType>::type;
 
 // uint_n_t
 
-template <unsigned BitSize, ThreadPolicy ThreadPolicyType = thread_unsafe_t>
+template <unsigned BitSize, cppx::ThreadPolicy ThreadPolicyType = cppx::thread_unsafe_t>
 using uint_n_t = typename integer_n<BitSize, unsigned, ThreadPolicyType>::type;
 
 // atomic_int_n_t
 
 template <unsigned BitSize>
-using atomic_int_n_t = typename integer_n<BitSize, signed, thread_safe_t>::type;
+using atomic_int_n_t = typename integer_n<BitSize, signed, cppx::thread_safe_t>::type;
 
 // atomic_uint_n_t
 
 template <unsigned BitSize>
-using atomic_uint_n_t = typename integer_n<BitSize, unsigned, thread_safe_t>::type;
+using atomic_uint_n_t = typename integer_n<BitSize, unsigned, cppx::thread_safe_t>::type;
 
 // integer_least_n
 
-template <unsigned BitSize, Signedness = signed, ThreadPolicy = thread_unsafe_t>
+template <unsigned BitSize, Signedness = signed, cppx::ThreadPolicy = cppx::thread_unsafe_t>
     requires(BitSize > 0 && BitSize <= (sizeof(std::uintmax_t) * 8))
 struct integer_least_n;
 
-template <unsigned BitSize, Signedness SignType = signed, ThreadPolicy ThreadPolicyType = thread_unsafe_t>
+template <unsigned BitSize, Signedness SignType = signed, cppx::ThreadPolicy ThreadPolicyType = cppx::thread_unsafe_t>
 using integer_least_n_t = typename integer_least_n<BitSize, SignType, ThreadPolicyType>::type;
 
 template <unsigned BitSize>
     requires(BitSize > 0 && BitSize <= 8)
-struct integer_least_n<BitSize, signed, thread_unsafe_t> : public integer_n<8, signed, thread_unsafe_t>
+struct integer_least_n<BitSize, signed, cppx::thread_unsafe_t> : public integer_n<8, signed, cppx::thread_unsafe_t>
 {
 };
 
 template <unsigned BitSize>
     requires(BitSize > 8 && BitSize <= 16)
-struct integer_least_n<BitSize, signed, thread_unsafe_t> : public integer_n<16, signed, thread_unsafe_t>
+struct integer_least_n<BitSize, signed, cppx::thread_unsafe_t> : public integer_n<16, signed, cppx::thread_unsafe_t>
 {
 };
 
 template <unsigned BitSize>
     requires(BitSize > 16 && BitSize <= 32)
-struct integer_least_n<BitSize, signed, thread_unsafe_t> : public integer_n<32, signed, thread_unsafe_t>
+struct integer_least_n<BitSize, signed, cppx::thread_unsafe_t> : public integer_n<32, signed, cppx::thread_unsafe_t>
 {
 };
 
 template <unsigned BitSize>
     requires(BitSize > 32 && BitSize <= 64)
-struct integer_least_n<BitSize, signed, thread_unsafe_t> : public integer_n<64, signed, thread_unsafe_t>
+struct integer_least_n<BitSize, signed, cppx::thread_unsafe_t> : public integer_n<64, signed, cppx::thread_unsafe_t>
 {
 };
 
-template <unsigned BitSize, Signedness SignType, ThreadPolicy ThreadPolicyType>
+template <unsigned BitSize, Signedness SignType, cppx::ThreadPolicy ThreadPolicyType>
     requires(BitSize > 0 && BitSize <= (sizeof(std::uintmax_t) * 8))
 struct integer_least_n
 {
@@ -121,23 +122,23 @@ struct integer_least_n
 
 // int_least_n_t
 
-template <unsigned BitSize, ThreadPolicy ThreadPolicyType = thread_unsafe_t>
+template <unsigned BitSize, cppx::ThreadPolicy ThreadPolicyType = cppx::thread_unsafe_t>
 using int_least_n_t = typename integer_least_n<BitSize, signed, ThreadPolicyType>::type;
 
 // uint_least_n_t
 
-template <unsigned BitSize, ThreadPolicy ThreadPolicyType = thread_unsafe_t>
+template <unsigned BitSize, cppx::ThreadPolicy ThreadPolicyType = cppx::thread_unsafe_t>
 using uint_least_n_t = typename integer_least_n<BitSize, unsigned, ThreadPolicyType>::type;
 
 //// atomic_int_least_n_t
 
 template <unsigned BitSize>
-using atomic_int_least_n_t = typename integer_least_n<BitSize, signed, thread_safe_t>::type;
+using atomic_int_least_n_t = typename integer_least_n<BitSize, signed, cppx::thread_safe_t>::type;
 
 //// atomic_uint_least_n_t
 
 template <unsigned BitSize>
-using atomic_uint_least_n_t = typename integer_least_n<BitSize, unsigned, thread_safe_t>::type;
+using atomic_uint_least_n_t = typename integer_least_n<BitSize, unsigned, cppx::thread_safe_t>::type;
 
 } // namespace meta
 } // namespace arba

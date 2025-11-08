@@ -19,7 +19,7 @@ set_build_type_ifndef()
 
 set_project_name(NAMESPACE "arba" FEATURE_NAME "meta")
 string(TIMESTAMP configure_datetime "%Y%m%d-%H%M%S")
-set_project_semantic_version("0.6.0" BUILD_METADATA "${configure_datetime}")
+set_project_semantic_version("0.7.0" BUILD_METADATA "${configure_datetime}")
 
 project(${PROJECT_NAME}
         VERSION ${PROJECT_VERSION}
@@ -51,9 +51,6 @@ set(headers
     include/arba/meta/concept/multipliable.hpp
     include/arba/meta/concept/signedness.hpp
     include/arba/meta/concept/totally_arithmetic.hpp
-    include/arba/meta/policy/endianness_policy.hpp
-    include/arba/meta/policy/exception_policy.hpp
-    include/arba/meta/policy/thread_policy.hpp
     include/arba/meta/type_traits/associated_type.hpp
     include/arba/meta/type_traits/crtp.hpp
     include/arba/meta/type_traits/default.hpp
@@ -65,7 +62,7 @@ set(headers
     include/arba/meta/type_traits/make_mutex_type.hpp
     include/arba/meta/type_traits/remove_right_reference.hpp
     include/arba/meta/type_traits/sequence.hpp
-    include/arba/meta/type_traits/type_and_source_location.hpp
+    include/arba/meta/type_traits/paired_with_source_location.hpp
     include/arba/meta/type_traits/type_or_default.hpp
     include/arba/meta/type_traits/value_or_default.hpp
     include/arba/meta/type_traits/value_or_generate.hpp
@@ -83,7 +80,7 @@ add_cpp_library(${PROJECT_NAME} HEADER_ONLY
 add_library("${PROJECT_NAMESPACE}::${PROJECT_FEATURE_NAME}" ALIAS ${PROJECT_NAME})
 
 ## Link C++ targets:
-find_package(arba-cppx 0.3.0 REQUIRED CONFIG)
+find_package(arba-cppx 0.4.0 REQUIRED CONFIG)
 target_link_libraries(${PROJECT_NAME}
     INTERFACE
         arba::cppx

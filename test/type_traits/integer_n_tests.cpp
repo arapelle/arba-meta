@@ -19,17 +19,17 @@ TEST(integer_n_tests, integer_n__ok)
     static_assert(std::is_same_v<meta::uint_n_t<64>, uint64_t>);
     static_assert(std::is_same_v<meta::uint_n_t<sizeof(uintmax_t) * 8>, uintmax_t>);
 
-    static_assert(std::is_same_v<meta::int_n_t<8, meta::thread_safe_t>, std::atomic_int8_t>);
-    static_assert(std::is_same_v<meta::int_n_t<16, meta::thread_safe_t>, std::atomic_int16_t>);
-    static_assert(std::is_same_v<meta::int_n_t<32, meta::thread_safe_t>, std::atomic_int32_t>);
-    static_assert(std::is_same_v<meta::int_n_t<64, meta::thread_safe_t>, std::atomic_int64_t>);
-    static_assert(std::is_same_v<meta::int_n_t<sizeof(intmax_t) * 8, meta::thread_safe_t>, std::atomic_intmax_t>);
+    static_assert(std::is_same_v<meta::int_n_t<8, cppx::thread_safe_t>, std::atomic_int8_t>);
+    static_assert(std::is_same_v<meta::int_n_t<16, cppx::thread_safe_t>, std::atomic_int16_t>);
+    static_assert(std::is_same_v<meta::int_n_t<32, cppx::thread_safe_t>, std::atomic_int32_t>);
+    static_assert(std::is_same_v<meta::int_n_t<64, cppx::thread_safe_t>, std::atomic_int64_t>);
+    static_assert(std::is_same_v<meta::int_n_t<sizeof(intmax_t) * 8, cppx::thread_safe_t>, std::atomic_intmax_t>);
 
-    static_assert(std::is_same_v<meta::uint_n_t<8, meta::thread_safe_t>, std::atomic_uint8_t>);
-    static_assert(std::is_same_v<meta::uint_n_t<16, meta::thread_safe_t>, std::atomic_uint16_t>);
-    static_assert(std::is_same_v<meta::uint_n_t<32, meta::thread_safe_t>, std::atomic_uint32_t>);
-    static_assert(std::is_same_v<meta::uint_n_t<64, meta::thread_safe_t>, std::atomic_uint64_t>);
-    static_assert(std::is_same_v<meta::uint_n_t<sizeof(uintmax_t) * 8, meta::thread_safe_t>, std::atomic_uintmax_t>);
+    static_assert(std::is_same_v<meta::uint_n_t<8, cppx::thread_safe_t>, std::atomic_uint8_t>);
+    static_assert(std::is_same_v<meta::uint_n_t<16, cppx::thread_safe_t>, std::atomic_uint16_t>);
+    static_assert(std::is_same_v<meta::uint_n_t<32, cppx::thread_safe_t>, std::atomic_uint32_t>);
+    static_assert(std::is_same_v<meta::uint_n_t<64, cppx::thread_safe_t>, std::atomic_uint64_t>);
+    static_assert(std::is_same_v<meta::uint_n_t<sizeof(uintmax_t) * 8, cppx::thread_safe_t>, std::atomic_uintmax_t>);
 
     SUCCEED();
 }
@@ -50,7 +50,7 @@ TEST(integer_n_tests, atomic_integer_n__ok)
 }
 
 template <class ExpectedIntegerType, unsigned Min, unsigned Max, meta::Signedness SignType = signed,
-          meta::ThreadPolicy ThreadPolicyType = meta::thread_unsafe_t>
+          cppx::ThreadPolicy ThreadPolicyType = cppx::thread_unsafe_t>
     requires(Min <= Max)
 constexpr void check_integer_least_n()
 {
@@ -81,15 +81,15 @@ TEST(integer_n_tests, integer_least_n__ok)
     check_integer_least_n<uint32_t, 17, 32, unsigned>();
     check_integer_least_n<uint64_t, 33, 64, unsigned>();
 
-    check_integer_least_n<std::atomic_int8_t, 1, 8, signed, meta::thread_safe_t>();
-    check_integer_least_n<std::atomic_int16_t, 9, 16, signed, meta::thread_safe_t>();
-    check_integer_least_n<std::atomic_int32_t, 17, 32, signed, meta::thread_safe_t>();
-    check_integer_least_n<std::atomic_int64_t, 33, 64, signed, meta::thread_safe_t>();
+    check_integer_least_n<std::atomic_int8_t, 1, 8, signed, cppx::thread_safe_t>();
+    check_integer_least_n<std::atomic_int16_t, 9, 16, signed, cppx::thread_safe_t>();
+    check_integer_least_n<std::atomic_int32_t, 17, 32, signed, cppx::thread_safe_t>();
+    check_integer_least_n<std::atomic_int64_t, 33, 64, signed, cppx::thread_safe_t>();
 
-    check_integer_least_n<std::atomic_uint8_t, 1, 8, unsigned, meta::thread_safe_t>();
-    check_integer_least_n<std::atomic_uint16_t, 9, 16, unsigned, meta::thread_safe_t>();
-    check_integer_least_n<std::atomic_uint32_t, 17, 32, unsigned, meta::thread_safe_t>();
-    check_integer_least_n<std::atomic_uint64_t, 33, 64, unsigned, meta::thread_safe_t>();
+    check_integer_least_n<std::atomic_uint8_t, 1, 8, unsigned, cppx::thread_safe_t>();
+    check_integer_least_n<std::atomic_uint16_t, 9, 16, unsigned, cppx::thread_safe_t>();
+    check_integer_least_n<std::atomic_uint32_t, 17, 32, unsigned, cppx::thread_safe_t>();
+    check_integer_least_n<std::atomic_uint64_t, 33, 64, unsigned, cppx::thread_safe_t>();
 
     SUCCEED();
 }
