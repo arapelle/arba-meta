@@ -1,7 +1,8 @@
 #pragma once
 
-#include <arba/cppx/policy/thread_policy.hpp>
 #include <arba/meta/concept/signedness.hpp>
+
+#include <arba/cppx/policy/thread_policy.hpp>
 
 #include <atomic>
 #include <cstdint>
